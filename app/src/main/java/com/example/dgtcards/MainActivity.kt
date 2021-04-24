@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.content.Intent
-import android.widget.EditText
-import com.example.dgtcards.ui.login.LoginActivity
+import android.widget.ImageView
+import android.widget.TextView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.dgtcards.homeActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +18,37 @@ class MainActivity : AppCompatActivity() {
 
     fun getStart(view: View) {
 
-        val intent = Intent(this, LoginActivity::class.java).apply {}
+        val dialog = BottomSheetDialog(this)
+
+        val view = layoutInflater.inflate(R.layout.login_layout,null)
+
+        val close = view.findViewById<ImageView>(R.id.iv_close)
+
+        dialog.setContentView(view)
+        dialog.show()
+
+
+        val linkToSignUp = view.findViewById<TextView>(R.id.linkToSignUp)
+        linkToSignUp.setOnClickListener({
+
+            dialog.dismiss();
+
+            val signUpView = layoutInflater.inflate(R.layout.register_layout,null)
+
+            dialog.setContentView(signUpView)
+            dialog.show()
+        })
+
+
+        close.setOnClickListener({
+            dialog.dismiss()
+        })
+
+    }
+
+    fun login(){
+        val intent = Intent(this, homeActivity::class.java).apply {}
         startActivity(intent)
     }
+
 }

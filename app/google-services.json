@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "785780109765",
+    "project_id": "gdt-cards",
+    "storage_bucket": "gdt-cards.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785780109765:android:aceb0860b43854070c5bac",
+        "android_client_info": {
+          "package_name": "com.example.dgtcards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785780109765-fq6erb50i2iqmsbklo1oal3n1n3m6v6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALHy0Hl8cHhMNEoIxRq4-jVAj-H9nKYVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785780109765-fq6erb50i2iqmsbklo1oal3n1n3m6v6q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785780109765:android:28a2b07cf6573ace0c5bac",
+        "android_client_info": {
+          "package_name": "com.example.gdtcards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785780109765-fq6erb50i2iqmsbklo1oal3n1n3m6v6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALHy0Hl8cHhMNEoIxRq4-jVAj-H9nKYVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785780109765-fq6erb50i2iqmsbklo1oal3n1n3m6v6q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
