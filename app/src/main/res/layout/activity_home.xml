@@ -6,23 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".homeActivity">
 
-    <GridLayout
-        android:id="@+id/logoBackground"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:background="#1A52DE8A"
+
+    <TextView
+        android:id="@+id/homeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Home"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+         >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="Hello Qiaoli"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homeTitle">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/userIcon"
+        android:layout_width="25dp"
+        android:layout_height="30dp" android:src="@drawable/user"
+        app:layout_constraintTop_toBottomOf="@+id/homeTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
         >
+    </ImageView>
 
-        <ImageView
-            android:id="@+id/appLogo"
-            android:layout_width="200dp"
-            android:layout_height="226dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/payment_method" />
+    <ListView
+        android:id="@+id/card_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        />
 
-    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
