@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TransactionDetailsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transaction"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="34dp"
+        android:textColor="#000"
+        android:textFontWeight="700"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        android:id="@+id/detail_title"
+        />
+    <ImageView android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/payment_method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_title"
+        android:layout_marginTop="40dp"
+        android:id="@+id/imageView"
+        >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/transaction_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_marginTop="20dp"
+        android:text="test"
+        android:textSize="18dp"
+        >
+    </TextView>
+    <TextView
+        android:id="@+id/transaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transaction_city"
+        android:layout_marginTop="20dp"
+        android:text="-$4.50"
+        android:textSize="36dp"
+        android:textColor="#000"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/transaction_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transaction_amount"
+        android:layout_marginTop="16dp"
+        android:text="Flinders Street - Deakin University"
+        android:textSize="16dp"
+        android:textColor="#000"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/transaction_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transaction_title"
+        android:layout_marginTop="10dp"
+        android:text="Receipt No: N0378743767"
+        android:textSize="16dp"
+        android:textColor="#000"
+        >
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
