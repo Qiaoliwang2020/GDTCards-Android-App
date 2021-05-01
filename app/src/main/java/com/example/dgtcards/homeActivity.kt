@@ -40,6 +40,8 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         listView.adapter = MyCustomAdapter(this)
 
 
+
+        // transaction list
         for (item in itemListModel){
             itemModelList.add(item)
         }
@@ -99,6 +101,4 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             //}
         //}
     }
-
-
 }

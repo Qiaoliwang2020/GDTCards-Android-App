@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    app:cardCornerRadius="20dp"
     >
-
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/card_style"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
+        android:background="#000"
+        >
         <GridLayout android:orientation="vertical">
-
             <TextView
                 android:id="@+id/balance"
                 android:layout_marginLeft="10dp"
@@ -38,9 +35,9 @@
         </GridLayout>
 
         <GridLayout
-            android:layout_marginLeft="190dp"
+           android:layout_gravity="right"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -56,4 +53,4 @@
         </GridLayout>
     </GridLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

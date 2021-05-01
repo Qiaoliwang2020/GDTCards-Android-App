@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 
         val close = view.findViewById<ImageView>(R.id.iv_close)
 
+        close.setOnClickListener({
+            dialog.dismiss()
+        })
+
         dialog.setContentView(view)
         dialog.show()
 
@@ -42,15 +46,18 @@ class MainActivity : AppCompatActivity() {
 
             dialog.dismiss();
 
+            val signUpdialog = BottomSheetDialog(this)
+
             val signUpView = layoutInflater.inflate(R.layout.register_layout,null)
 
-            dialog.setContentView(signUpView)
-            dialog.show()
-        })
+            val signUpClose = signUpView.findViewById<ImageView>(R.id.signUp_close)
 
+            signUpClose.setOnClickListener({
+                signUpdialog.dismiss()
+            })
 
-        close.setOnClickListener({
-            dialog.dismiss()
+            signUpdialog.setContentView(signUpView)
+            signUpdialog.show()
         })
 
     }
