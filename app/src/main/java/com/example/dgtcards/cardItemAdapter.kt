@@ -33,7 +33,7 @@ class cardItemAdapter(var clickCardItem:ClickCardItem): RecyclerView.Adapter<car
         var itemModel = itemModelList[position]
 
         holder.cityIcon.setImageResource(itemModel.image)
-        holder.balance.text = itemModel.balance
+        holder.amount.text = itemModel.balance
         holder.cityName.text = itemModel.city
         holder.cardItem.setBackgroundColor(itemModel.cardBackground)
 
@@ -43,7 +43,7 @@ class cardItemAdapter(var clickCardItem:ClickCardItem): RecyclerView.Adapter<car
     }
 
     class cardAdapterVH(itemView: View) :RecyclerView.ViewHolder(itemView){
-         var balance = itemView.balance
+         var amount = itemView.amount
          var cityName = itemView.cityName
          var cityIcon = itemView.cityIcon
          var cardItem = itemView.card_item

@@ -20,8 +20,9 @@ class cardDetailsActivity : AppCompatActivity() {
         city_name.text = itemModel!!.city
         balance_amount.text = itemModel!!.balance
         card_id.text = itemModel!!.id
-        expire_day.text = "Expire day:" + itemModel!!.expireDay
-        created_time.text = "Created Time:"+ itemModel!!.createTime
+        expire_day.text = "Expire: " + itemModel!!.expireDay
+        created_time.text = "Created Time: "+ itemModel!!.createTime
         card_background.setBackgroundColor(itemModel!!.cardBackground)
+        page_title.text = itemModel!!.city
     }
 }

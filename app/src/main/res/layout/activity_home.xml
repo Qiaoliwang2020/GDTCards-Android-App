@@ -14,6 +14,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="Home"
         android:textSize="24dp"
+        android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,18 +46,6 @@
         >
     </ImageView>
 
-    <ListView
-        android:id="@+id/card_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cards"
         app:layout_constraintTop_toBottomOf="@+id/userName"
@@ -64,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -100,7 +89,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/transaction_history_list"
         />
 

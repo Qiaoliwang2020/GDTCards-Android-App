@@ -23,9 +23,9 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
     // card list
     var cardListModel = arrayOf(
-            cardItemModel(R.drawable.melbourne,"$25.00","Melbourne","N03787437670","22 Apr 2022","22 Apr 2021",R.color.design_default_color_primary),
-            cardItemModel(R.drawable.sydney_opera_house,"$20.00","Sydney","Sy03787437670","22 Apr 2022","22 Apr 2021",R.color.teal_200),
-            cardItemModel(R.drawable.new_york,"$45.00","New York","NYC03787437670","22 Apr 2022","22 Apr 2021",R.color.green_700)
+            cardItemModel(R.drawable.melbourne,"$25.00","Melbourne","N03787437670","22/04/2022","22/04/2021",R.color.design_default_color_primary),
+            cardItemModel(R.drawable.sydney_opera_house,"$20.00","Sydney","Sy03787437670","22/04/2022","22/04/2022",R.color.teal_200),
+            cardItemModel(R.drawable.new_york,"$45.00","New York","NYC03787437670","22/04/2022","22/04/2022",R.color.green_700)
     )
     var cardItemModelList = ArrayList<cardItemModel>();
     var cardItemAdapter : cardItemAdapter ? = null;

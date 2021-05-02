@@ -23,14 +23,15 @@
                 android:layout_marginTop="10dp"
                 android:text="balance"
                 android:textColor="#ffffff"
-                android:textSize="16dp"></TextView>
+                android:textSize="14dp"></TextView>
 
             <TextView
                 android:id="@+id/amount"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:text="$25"
                 android:textColor="#fff"
-                android:textSize="42dp"></TextView>
+                android:textSize="34dp"></TextView>
         </GridLayout>
 
         <GridLayout
@@ -50,7 +51,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Sydney"
                 android:textColor="#fff"
-                android:textSize="20dp"></TextView>
+                android:textSize="14dp"></TextView>
         </GridLayout>
     </GridLayout>
 
