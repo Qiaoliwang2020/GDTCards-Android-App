@@ -19,86 +19,60 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 
 
-class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem {
+class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
+
+    // card list
+    var cardListModel = arrayOf(
+            cardItemModel(R.drawable.melbourne,"$25.00","Melbourne","N03787437670","22 Apr 2022","22 Apr 2021",R.color.design_default_color_primary),
+            cardItemModel(R.drawable.sydney_opera_house,"$20.00","Sydney","Sy03787437670","22 Apr 2022","22 Apr 2021",R.color.teal_200),
+            cardItemModel(R.drawable.new_york,"$45.00","New York","NYC03787437670","22 Apr 2022","22 Apr 2021",R.color.green_700)
+    )
+    var cardItemModelList = ArrayList<cardItemModel>();
+    var cardItemAdapter : cardItemAdapter ? = null;
 
     // transaction list
-    var itemListModel = arrayOf(
+    var transactionListModel = arrayOf(
         transactionItemModel(R.drawable.payment_method,"Flinders Street - Deakin University","15 Mar 2021","-$4.50","Melbourne","N0378743767"),
         transactionItemModel(R.drawable.public_transport,"Southern Cross Station - Flinder Street","15 Mar 2021","-$5.0","Melbourne","N03787232767"),
         transactionItemModel(R.drawable.payment_method,"Queens Street - Brooklyn Main Street","5 Mar 2020","-$6.0","NewYork","N03787123e671")
     )
-
-    var itemModelList = ArrayList<transactionItemModel>();
-    var itemAdapter : transactionItemAdapter ? = null;
+    var transactionItemModelList = ArrayList<transactionItemModel>();
+    var transactionItemAdapter : transactionItemAdapter ? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val listView = findViewById<ListView>(R.id.card_list_view)
-
-        listView.adapter = MyCustomAdapter(this)
-
-
+        // card list
+        for (item in cardListModel){
+            cardItemModelList.add(item)
+        }
+        cards.layoutManager = LinearLayoutManager(this)
+        cards.setHasFixedSize(true)
+        cardItemAdapter = cardItemAdapter(this)
+        cardItemAdapter!!.setData(cardItemModelList)
+        cards.adapter = cardItemAdapter
 
         // transaction list
-        for (item in itemListModel){
-            itemModelList.add(item)
+        for (item in transactionListModel){
+            transactionItemModelList.add(item)
         }
-
         transaction_history_list.layoutManager = LinearLayoutManager(this)
         transaction_history_list.setHasFixedSize(true)
-
-        itemAdapter = transactionItemAdapter(this)
-        itemAdapter!!.setData(itemModelList)
-        transaction_history_list.adapter = itemAdapter
+        transactionItemAdapter = transactionItemAdapter(this)
+        transactionItemAdapter!!.setData(transactionItemModelList)
+        transaction_history_list.adapter = transactionItemAdapter
     }
 
-    private  class MyCustomAdapter(context:Context):BaseAdapter(){
-        private val mContext:Context
-
-        private val amounts = arrayListOf<Number>(
-                25
-        )
-
-        init {
-           mContext = context
-        }
-        // responsible for how many rows in my list
-        override fun getCount(): Int {
-            return amounts.size
-        }
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-        override fun getItem(position: Int): Any {
-            return "test string"
-        }
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
-            val layoutInflater = LayoutInflater.from(mContext)
-            val card = layoutInflater.inflate(R.layout.card, parent,false)
-
-            val amount = card.findViewById<TextView>(R.id.amount)
-            amount.text = "$" + amounts.get(position).toString()
-            return card
-        }
-    }
 
     override fun ClickTransactionItem(itemModel: transactionItemModel) {
-        var itemModel1 = itemModel;
-        var name = itemModel1.name;
 
-        startActivity(Intent(this@homeActivity,TransactionDetailsActivity::class.java).putExtra("data",itemModel1))
+        var transactionItem = itemModel;
+        startActivity(Intent(this@homeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
+    }
 
-        //when(name){
-
-            //"apple"->
-            //startActivity(Intent(this@homeActivity,TransactionDetailsActivity::class.java).putExtra("data",itemModel1))
-
-            //else ->{
-                //Toast.makeText(this@homeActivity,"no action",Toast.LENGTH_LONG).show()
-            //}
-        //}
+    override fun ClickCardItem(itemModel: cardItemModel) {
+        var cardItem = itemModel;
+        startActivity(Intent(this@homeActivity,cardDetailsActivity::class.java).putExtra("data",cardItem))
     }
 }
