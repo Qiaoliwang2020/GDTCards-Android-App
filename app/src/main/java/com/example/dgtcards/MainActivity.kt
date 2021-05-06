@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.example.dgtcards.homeActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val signIn = view.findViewById<Button>(R.id.login)
 
         signIn.setOnClickListener({
-            val intent = Intent(this, homeActivity::class.java).apply {}
+            val intent = Intent(this, HomeActivity::class.java).apply {}
             startActivity(intent)
         })
 

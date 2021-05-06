@@ -12,7 +12,7 @@
         <activity android:name=".cardDetailsActivity"></activity>
         <activity android:name=".TransactionDetailsActivity" />
         <activity
-            android:name=".homeActivity"
+            android:name=".HomeActivity"
             android:label="homeActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">

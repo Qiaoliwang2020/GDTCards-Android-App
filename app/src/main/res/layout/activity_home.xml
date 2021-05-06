@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homeActivity">
+    tools:context=".HomeActivity">
 
     <GridLayout
         android:orientation="vertical"
@@ -118,13 +118,17 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:id="@+id/addCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:src="@drawable/ic_baseline_add_24"
+        app:backgroundTint="@color/green_500"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        tools:ignore="VectorDrawableCompat"
         android:onClick="createCard"
-       >
+        >
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 

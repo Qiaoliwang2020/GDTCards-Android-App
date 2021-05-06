@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-
+    >
     <ImageView
         android:id="@+id/iv_close"
         android:layout_width="20dp"
@@ -59,16 +61,19 @@
         android:paddingLeft="20dp"
         android:text="Are you a resident?" />
 
-    <GridLayout
+    <RadioGroup
+        android:id="@+id/recidenceRadio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <RadioButton
             android:id="@+id/isRecidence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
+            android:onClick="onRadioClicked"
             android:text="Yes" />
 
         <RadioButton
@@ -77,8 +82,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
+            android:onClick="onRadioClicked"
             android:text="No" />
-    </GridLayout>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/cardHolderName"
@@ -109,16 +115,18 @@
         android:layout_marginTop="10dp"
         android:paddingLeft="20dp"
         android:text="Gender" />
-    <GridLayout
+    <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <RadioButton
             android:id="@+id/genderFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
+            android:onClick="onRadioClicked"
             android:text="female" />
 
         <RadioButton
@@ -127,8 +135,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
+            android:onClick="onRadioClicked"
             android:text="male" />
-    </GridLayout>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/CurrentAddress"

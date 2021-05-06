@@ -1,24 +1,17 @@
 package com.example.dgtcards
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 
 
-class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
+class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
 
     lateinit var database: DatabaseReference
 
@@ -69,12 +62,12 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     override fun ClickTransactionItem(itemModel: transactionItemModel) {
 
         var transactionItem = itemModel;
-        startActivity(Intent(this@homeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
+        startActivity(Intent(this@HomeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
     }
 
     override fun ClickCardItem(itemModel: cardItemModel) {
         var cardItem = itemModel;
-        startActivity(Intent(this@homeActivity,cardDetailsActivity::class.java).putExtra("data",cardItem))
+        startActivity(Intent(this@HomeActivity,cardDetailsActivity::class.java).putExtra("data",cardItem))
     }
 
     fun createCard(view: View) {
@@ -86,11 +79,54 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
         val close = view.findViewById<ImageView>(R.id.iv_close)
 
-        close.setOnClickListener({
+        close.setOnClickListener{
             dialog.dismiss()
-        })
+        }
 
         dialog.setContentView(view)
         dialog.show()
+
+        val submit = view.findViewById<Button>(R.id.submit)
+
+        submit.setOnClickListener{
+
+            var city = view.findViewById<EditText>(R.id.city).text
+            var cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput).text
+            var email = view.findViewById<EditText>(R.id.emailInput).text
+            var address = view.findViewById<EditText>(R.id.CurrentAddressInput).text
+
+            Toast.makeText(this,city,Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun onRadioClicked(view: View){
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.isRecidence ->
+                    if (checked) {
+                        var recidence = view.findViewById<RadioButton>(R.id.isRecidence).text
+                        Toast.makeText(this,recidence,Toast.LENGTH_LONG).show()
+                    }
+                R.id.notRecidence ->
+                    if (checked) {
+                        var recidence = view.findViewById<RadioButton>(R.id.notRecidence).text
+                        Toast.makeText(this,recidence,Toast.LENGTH_LONG).show()
+                    }
+                R.id.genderFemale ->
+                    if (checked) {
+                        var gender = view.findViewById<RadioButton>(R.id.genderFemale).text
+                        Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
+                    }
+                R.id.genderMale ->
+                    if (checked) {
+                        var gender = view.findViewById<RadioButton>(R.id.genderMale).text
+                        Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
+                    }
+            }
+        }
     }
 }
