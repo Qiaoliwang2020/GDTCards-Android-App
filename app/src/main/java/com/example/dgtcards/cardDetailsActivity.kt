@@ -21,17 +21,17 @@ class cardDetailsActivity : AppCompatActivity() {
 
         itemModel = intent.getSerializableExtra("data") as cardItemModel;
 
-        city_icon.setImageResource(itemModel!!.image)
+        itemModel!!.image?.let { city_icon.setImageResource(it) }
         city_name.text = itemModel!!.city
-        balance_amount.text = itemModel!!.balance
+        balance_amount.text = "$"+ itemModel!!.balance.toString()
         card_id.text = itemModel!!.id
         expire_day.text = "Expire: " + itemModel!!.expireDay
         created_time.text = "Created Time: "+ itemModel!!.createTime
-        card_background.setBackgroundColor(itemModel!!.cardBackground)
+        itemModel!!.cardBackground?.let { card_background.setBackgroundColor(it) }
         page_title.text = itemModel!!.city
 
 
-        displayBitmap(itemModel!!.id)
+        itemModel!!.id?.let { displayBitmap(it) }
     }
 
     private fun createBarcodeBitmap(

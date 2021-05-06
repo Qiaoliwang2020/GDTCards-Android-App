@@ -32,10 +32,10 @@ class cardItemAdapter(var clickCardItem:ClickCardItem): RecyclerView.Adapter<car
     override fun onBindViewHolder(holder: cardAdapterVH, position: Int) {
         var itemModel = itemModelList[position]
 
-        holder.cityIcon.setImageResource(itemModel.image)
-        holder.amount.text = itemModel.balance
+        itemModel.image?.let { holder.cityIcon.setImageResource(it) }
+        holder.amount.text = "$" + itemModel.balance.toString()
         holder.cityName.text = itemModel.city
-        holder.cardItem.setBackgroundColor(itemModel.cardBackground)
+        itemModel.cardBackground?.let { holder.cardItem.setBackgroundColor(it) }
 
         holder.itemView.setOnClickListener {
             clickCardItem.ClickCardItem(itemModel)

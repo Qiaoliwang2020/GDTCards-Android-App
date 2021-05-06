@@ -10,22 +10,23 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 
 
 class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
 
+    lateinit var database: DatabaseReference
+
     // card list
     var cardListModel = arrayOf(
-            cardItemModel(R.drawable.melbourne,"$25.00","Melbourne","N03787437670","22/04/2022","22/04/2021",R.color.design_default_color_primary),
-            cardItemModel(R.drawable.sydney_opera_house,"$20.00","Sydney","Sy03787437670","22/04/2022","22/04/2022",R.color.teal_200),
-            cardItemModel(R.drawable.new_york,"$45.00","New York","NYC03787437670","22/04/2022","22/04/2022",R.color.green_700)
+            cardItemModel(R.drawable.melbourne,25.00,"Melbourne","N03787437670","22/04/2022","22/04/2021",R.color.design_default_color_primary),
+            cardItemModel(R.drawable.sydney_opera_house,20.00,"Sydney","Sy03787437670","22/04/2022","22/04/2022",R.color.teal_200),
+            cardItemModel(R.drawable.new_york,45.00,"New York","NYC03787437670","22/04/2022","22/04/2022",R.color.green_700)
     )
     var cardItemModelList = ArrayList<cardItemModel>();
     var cardItemAdapter : cardItemAdapter ? = null;
@@ -74,5 +75,22 @@ class homeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     override fun ClickCardItem(itemModel: cardItemModel) {
         var cardItem = itemModel;
         startActivity(Intent(this@homeActivity,cardDetailsActivity::class.java).putExtra("data",cardItem))
+    }
+
+    fun createCard(view: View) {
+
+        val dialog = BottomSheetDialog(this)
+
+        val view = layoutInflater.inflate(R.layout.create_card_layout,null)
+
+
+        val close = view.findViewById<ImageView>(R.id.iv_close)
+
+        close.setOnClickListener({
+            dialog.dismiss()
+        })
+
+        dialog.setContentView(view)
+        dialog.show()
     }
 }

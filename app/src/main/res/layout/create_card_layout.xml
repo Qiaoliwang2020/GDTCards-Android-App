@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <ImageView
-        android:id="@+id/signUp_close"
+        android:id="@+id/iv_close"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="end"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/cancel" />
 
     <TextView
-        android:id="@+id/registerDialog"
+        android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,18 +24,20 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="200dp"
         android:layout_marginRight="200dp"
-        android:text="Create an account"
+        android:text="Get a new card"
+        android:textStyle="bold"
+        android:textColor="#000"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/fullNameLabel"
+        android:id="@+id/cityLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:text="Full name" />
+        android:text="Which City’s transport card you want to apply for?" />
 
     <EditText
-        android:id="@+id/fullNameInput"
+        android:id="@+id/city"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginStart="20dp"
@@ -45,7 +48,108 @@
         android:height="45dp"
         android:background="@drawable/input_style"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:id="@+id/recidence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:text="Are you a resident?" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/isRecidence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:soundEffectsEnabled="true"
+            android:text="Yes" />
+
+        <RadioButton
+            android:id="@+id/notRecidence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:soundEffectsEnabled="true"
+            android:text="No" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/cardHolderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="Card Holder’s name" />
+
+    <EditText
+        android:id="@+id/cardHolderNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:height="45dp"
+        android:background="@drawable/input_style"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:id="@+id/genderLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:text="Gender" />
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/genderFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:soundEffectsEnabled="true"
+            android:text="female" />
+
+        <RadioButton
+            android:id="@+id/genderMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:soundEffectsEnabled="true"
+            android:text="male" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/CurrentAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="Current Address" />
+
+    <EditText
+        android:id="@+id/CurrentAddressInput"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:height="45dp"
+        android:background="@drawable/input_style"
+        android:ems="10"
+        android:inputType="text"
         android:paddingLeft="20dp" />
 
     <TextView
@@ -57,7 +161,7 @@
         android:text="Email" />
 
     <EditText
-        android:id="@+id/emailInput"
+        android:id="@+id/EmailInput"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginStart="20dp"
@@ -68,114 +172,20 @@
         android:height="45dp"
         android:background="@drawable/input_style"
         android:ems="10"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:paddingLeft="20dp" />
-
-    <TextView
-        android:id="@+id/phoneLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="20dp"
-        android:text="Phone" />
-
-    <EditText
-        android:id="@+id/phoneInput"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:height="45dp"
-        android:background="@drawable/input_style"
-        android:ems="10"
-        android:inputType="textPhonetic"
-        android:paddingLeft="20dp" />
-
-    <TextView
-        android:id="@+id/passwordLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="20dp"
-        android:text="Password" />
-
-    <EditText
-        android:id="@+id/passwordInput"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:height="45dp"
-        android:background="@drawable/input_style"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:paddingLeft="20dp" />
-
-    <TextView
-        android:id="@+id/confirmPasswordLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="20dp"
-        android:text="Confirm Password" />
-
-    <EditText
-        android:id="@+id/confirmPasswordInput"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:height="45dp"
-        android:background="@drawable/input_style"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:paddingLeft="20dp" />
-
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="have an account?" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
-            android:text="login"
-            android:textColor="#007AFF" />
-    </GridLayout>
 
     <android.widget.Button
-        android:id="@+id/signUp"
+        android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_style"
         android:backgroundTint="@color/green_700"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/button_style"
         android:textColor="#fff"
-        android:text="sign up" />
-
+        android:text="submit" />
 
 </LinearLayout>
