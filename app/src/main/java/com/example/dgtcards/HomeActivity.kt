@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -115,11 +117,14 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         submit.setOnClickListener{
             dbref = FirebaseDatabase.getInstance().getReference("Cards")
 
+            val current = LocalDateTime.now()
+            val nextYear = current.plusYears(1)
+            val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
             val rnd = Random()
             val backgroundColor: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-            val current = Calendar.getInstance()
-            val expireDay =current.add(Calendar.DATE, 365).toString()
-            val createdTime = current.toString()
+            val expireDay =nextYear.format(dateFormatter)
+            val createdTime = current.format(dateFormatter)
             val image = R.drawable.public_transport
             val balance = 0.00
             val city = view.findViewById<EditText>(R.id.city)!!.text.toString()
