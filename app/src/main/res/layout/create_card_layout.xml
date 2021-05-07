@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioClicked"
+            android:onClick="onRadioRecidenceClicked"
             android:text="Yes" />
 
         <RadioButton
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioClicked"
+            android:onClick="onRadioRecidenceClicked"
             android:text="No" />
     </RadioGroup>
 
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioClicked"
+            android:onClick="onRadioGenderClicked"
             android:text="female" />
 
         <RadioButton
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioClicked"
+            android:onClick="onRadioGenderClicked"
             android:text="male" />
     </RadioGroup>
 

@@ -3,17 +3,20 @@ package com.example.dgtcards
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.create_card_layout.*
 
 
 class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
 
-    lateinit var database: DatabaseReference
+    var recidence: Boolean? = null
+    var gender :String? = null
 
     // card list
     var cardListModel = arrayOf(
@@ -76,7 +79,6 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
         val view = layoutInflater.inflate(R.layout.create_card_layout,null)
 
-
         val close = view.findViewById<ImageView>(R.id.iv_close)
 
         close.setOnClickListener{
@@ -90,16 +92,22 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
         submit.setOnClickListener{
 
-            var city = view.findViewById<EditText>(R.id.city).text
-            var cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput).text
-            var email = view.findViewById<EditText>(R.id.emailInput).text
-            var address = view.findViewById<EditText>(R.id.CurrentAddressInput).text
 
-            Toast.makeText(this,city,Toast.LENGTH_LONG).show()
+
+//            var city = view.findViewById<EditText>(R.id.city)!!.text
+//            var cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text
+//            var email = view.findViewById<EditText>(R.id.emailInput)!!.text
+//            var address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text
+//
+
+
+            // dialog.dismiss()
+
+            Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
         }
     }
 
-    fun onRadioClicked(view: View){
+    fun onRadioRecidenceClicked(view: View){
         if (view is RadioButton) {
             // Is the button now checked?
             val checked = view.isChecked
@@ -108,22 +116,32 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             when (view.getId()) {
                 R.id.isRecidence ->
                     if (checked) {
-                        var recidence = view.findViewById<RadioButton>(R.id.isRecidence).text
-                        Toast.makeText(this,recidence,Toast.LENGTH_LONG).show()
+                        recidence = true
+
                     }
                 R.id.notRecidence ->
                     if (checked) {
-                        var recidence = view.findViewById<RadioButton>(R.id.notRecidence).text
-                        Toast.makeText(this,recidence,Toast.LENGTH_LONG).show()
+                        recidence = false
                     }
+            }
+        }
+    }
+    fun onRadioGenderClicked(view: View){
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+
                 R.id.genderFemale ->
                     if (checked) {
-                        var gender = view.findViewById<RadioButton>(R.id.genderFemale).text
+                        gender = view.findViewById<RadioButton>(R.id.genderFemale).text.toString()
                         Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
                     }
                 R.id.genderMale ->
                     if (checked) {
-                        var gender = view.findViewById<RadioButton>(R.id.genderMale).text
+                        gender = view.findViewById<RadioButton>(R.id.genderMale).text.toString()
                         Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
                     }
             }

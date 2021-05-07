@@ -2,7 +2,7 @@ package com.example.dgtcards
 
 import java.io.Serializable
 
-class cardItemModel (
+data class cardItemModel (
     var image:Int,
     var balance:Double ? = 0.00,
     var city:String,

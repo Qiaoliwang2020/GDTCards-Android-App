@@ -67,7 +67,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/card"
+            />
 
 
         <GridLayout
@@ -113,6 +115,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:id="@+id/transaction_history_list"
+            tools:listitem="@layout/transaction_item"
             />
     </GridLayout>
 
