@@ -11,15 +11,15 @@ import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
 import kotlinx.android.synthetic.main.card.*
 
-class cardDetailsActivity : AppCompatActivity() {
+class CardDetailsActivity : AppCompatActivity() {
 
-    var itemModel:cardItemModel ? = null;
+    var itemModel:CardModel ? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_details)
 
-        itemModel = intent.getSerializableExtra("data") as cardItemModel;
+        itemModel = intent.getSerializableExtra("data") as CardModel;
 
         itemModel!!.image?.let { city_icon.setImageResource(it) }
         city_name.text = itemModel!!.city

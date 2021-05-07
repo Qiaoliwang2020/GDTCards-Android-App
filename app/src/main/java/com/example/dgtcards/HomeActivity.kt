@@ -1,31 +1,31 @@
 package com.example.dgtcards
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.create_card_layout.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,cardItemAdapter.ClickCardItem {
+class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,CardAdapter.ClickCardItem  {
 
-    var recidence: Boolean? = null
+    private lateinit var dbref : DatabaseReference
+    private lateinit var cardListRecyclerView : RecyclerView
+    private lateinit var cardsArrayList : ArrayList<CardModel>
+    var cardAdapter : CardAdapter ? = null;
+    var residence: Boolean? = null
     var gender :String? = null
 
-    // card list
-    var cardListModel = arrayOf(
-            cardItemModel(R.drawable.melbourne,25.00,"Melbourne","N03787437670","22/04/2022","22/04/2021",R.color.design_default_color_primary),
-            cardItemModel(R.drawable.sydney_opera_house,20.00,"Sydney","Sy03787437670","22/04/2022","22/04/2022",R.color.teal_200),
-            cardItemModel(R.drawable.new_york,45.00,"New York","NYC03787437670","22/04/2022","22/04/2022",R.color.green_700)
-    )
-    var cardItemModelList = ArrayList<cardItemModel>();
-    var cardItemAdapter : cardItemAdapter ? = null;
 
     // transaction list
     var transactionListModel = arrayOf(
@@ -41,14 +41,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         setContentView(R.layout.activity_home)
 
         // card list
-        for (item in cardListModel){
-            cardItemModelList.add(item)
-        }
-        cards.layoutManager = LinearLayoutManager(this)
-        cards.setHasFixedSize(true)
-        cardItemAdapter = cardItemAdapter(this)
-        cardItemAdapter!!.setData(cardItemModelList)
-        cards.adapter = cardItemAdapter
+        cardListRecyclerView = findViewById(R.id.cards)
+        cardListRecyclerView.layoutManager = LinearLayoutManager(this)
+        cardListRecyclerView.setHasFixedSize(true)
+
+        cardsArrayList = arrayListOf<CardModel>()
+        getCardData()
 
         // transaction list
         for (item in transactionListModel){
@@ -68,11 +66,35 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         startActivity(Intent(this@HomeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
     }
 
-    override fun ClickCardItem(itemModel: cardItemModel) {
-        var cardItem = itemModel;
-        startActivity(Intent(this@HomeActivity,cardDetailsActivity::class.java).putExtra("data",cardItem))
+    override fun ClickCardItem(itemModel: CardModel) {
+        var card = itemModel;
+        startActivity(Intent(this@HomeActivity,CardDetailsActivity::class.java).putExtra("data",card))
     }
 
+    private fun getCardData(){
+        dbref = FirebaseDatabase.getInstance().getReference("Cards")
+        dbref.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity,error.toString(),Toast.LENGTH_LONG).show()
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    for(cardSnapshot in snapshot.children){
+                        var card = cardSnapshot.getValue(CardModel::class.java)
+                        cardsArrayList.add(card!!)
+                    }
+
+                    cardAdapter = CardAdapter(this@HomeActivity)
+                    cardAdapter!!.setData(cardsArrayList)
+
+                    cardListRecyclerView.adapter = cardAdapter
+                }
+            }
+
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createCard(view: View) {
 
         val dialog = BottomSheetDialog(this)
@@ -91,37 +113,62 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         val submit = view.findViewById<Button>(R.id.submit)
 
         submit.setOnClickListener{
+            dbref = FirebaseDatabase.getInstance().getReference("Cards")
 
-
-
-//            var city = view.findViewById<EditText>(R.id.city)!!.text
-//            var cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text
-//            var email = view.findViewById<EditText>(R.id.emailInput)!!.text
-//            var address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text
-//
+            val rnd = Random()
+            val backgroundColor: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+            val current = Calendar.getInstance()
+            val expireDay =current.add(Calendar.DATE, 365).toString()
+            val createdTime = current.toString()
+            val image = R.drawable.public_transport
+            val balance = 0.00
+            val city = view.findViewById<EditText>(R.id.city)!!.text.toString()
+            val id = dbref.key.toString()
+            val cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text.toString()
+            val gender = gender
+            val residence = residence
+            val email = view.findViewById<EditText>(R.id.EmailInput)!!.text.toString()
+            val address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text.toString()
 
 
             // dialog.dismiss()
 
-            Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
+            val card = CardModel(image,balance,city,id,expireDay,createdTime,
+                backgroundColor,cardHolderName,gender,residence,address,email)
+
+            dbref.child(city).setValue(card).addOnSuccessListener {
+
+                view.findViewById<EditText>(R.id.city).text.clear()
+                view.findViewById<EditText>(R.id.cardHolderNameInput).text.clear()
+                view.findViewById<EditText>(R.id.CurrentAddressInput).text.clear()
+                view.findViewById<EditText>(R.id.EmailInput).text.clear()
+
+                dialog.dismiss()
+
+                Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
+
+            }.addOnFailureListener {
+                Toast.makeText(this,"Failed",Toast.LENGTH_LONG).show()
+            }
         }
     }
 
-    fun onRadioRecidenceClicked(view: View){
+
+    fun onRadioResidenceClicked(view: View){
         if (view is RadioButton) {
             // Is the button now checked?
             val checked = view.isChecked
 
             // Check which radio button was clicked
             when (view.getId()) {
-                R.id.isRecidence ->
+                R.id.isResidence ->
                     if (checked) {
-                        recidence = true
+                        residence = true
 
                     }
-                R.id.notRecidence ->
+                R.id.notResidence ->
                     if (checked) {
-                        recidence = false
+                        residence = false
                     }
             }
         }
@@ -147,4 +194,8 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             }
         }
     }
+
+
 }
+
+

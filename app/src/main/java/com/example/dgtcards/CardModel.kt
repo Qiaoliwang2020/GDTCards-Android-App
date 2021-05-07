@@ -1,4 +1,5 @@
 package com.example.dgtcards
+import java.io.Serializable
 
 data class CardModel (
     var image:Int ? = null,
@@ -13,4 +14,4 @@ data class CardModel (
     var recidence :Boolean ? = false,
     var currentAddress:String ? = null,
     var email:String ? = null
-)
+):Serializable

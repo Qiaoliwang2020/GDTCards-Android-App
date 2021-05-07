@@ -62,27 +62,27 @@
         android:text="Are you a resident?" />
 
     <RadioGroup
-        android:id="@+id/recidenceRadio"
+        android:id="@+id/residenceRadio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
         <RadioButton
-            android:id="@+id/isRecidence"
+            android:id="@+id/isResidence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioRecidenceClicked"
+            android:onClick="onRadioResidenceClicked"
             android:text="Yes" />
 
         <RadioButton
-            android:id="@+id/notRecidence"
+            android:id="@+id/notResidence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:soundEffectsEnabled="true"
-            android:onClick="onRadioRecidenceClicked"
+            android:onClick="onRadioResidenceClicked"
             android:text="No" />
     </RadioGroup>
 
