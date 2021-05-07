@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -100,6 +101,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     fun createCard(view: View) {
 
         val dialog = BottomSheetDialog(this)
+        val offsetFromTop = 150
+        dialog?.behavior?.apply {
+            isFitToContents = false
+            setExpandedOffset(offsetFromTop)
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
         val view = layoutInflater.inflate(R.layout.create_card_layout,null)
 

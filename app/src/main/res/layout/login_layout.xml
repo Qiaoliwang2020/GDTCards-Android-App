@@ -3,29 +3,33 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+  <GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_close"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="end"
-        android:layout_margin="10dp"
-        android:src="@drawable/cancel" />
+      <TextView
+          android:id="@+id/loginTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"
+          android:layout_marginTop="15dp"
+          android:layout_marginBottom="20dp"
+          android:layout_marginLeft="40dp"
+          android:layout_gravity="center"
+          android:text="Login"
+          android:textColor="#000"
+          android:textSize="22sp"
+          android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/loginTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginRight="200dp"
-        android:text="login"
-        android:textSize="18sp" />
+      <ImageView
+          android:id="@+id/iv_close"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_margin="10dp"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentRight="true"
+          android:src="@drawable/cancel" />
 
+  </GridLayout>
     <TextView
         android:id="@+id/userAccount"
         android:layout_width="match_parent"
@@ -98,7 +102,6 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_700"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"

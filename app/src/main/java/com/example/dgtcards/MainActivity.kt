@@ -7,10 +7,13 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     fun getStart(view: View) {
 
         val dialog = BottomSheetDialog(this)
+
 
         val view = layoutInflater.inflate(R.layout.login_layout,null)
 
@@ -46,6 +50,13 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss();
 
             val signUpdialog = BottomSheetDialog(this)
+
+            val offsetFromTop = 170
+            signUpdialog?.behavior?.apply {
+                isFitToContents = false
+                setExpandedOffset(offsetFromTop)
+                state = BottomSheetBehavior.STATE_EXPANDED
+            }
 
             val signUpView = layoutInflater.inflate(R.layout.register_layout,null)
 
