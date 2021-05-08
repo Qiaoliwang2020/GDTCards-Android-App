@@ -4,21 +4,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.content.Intent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.login_layout.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbref : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+        dbref = FirebaseDatabase.getInstance().getReference("Users")
     }
 
     private fun loginFormValidate(view: View):Boolean{
@@ -86,8 +94,18 @@ class MainActivity : AppCompatActivity() {
         signIn.setOnClickListener{
 
             if(loginFormValidate(view)){
-                val intent = Intent(this, HomeActivity::class.java).apply {}
-                startActivity(intent)
+
+                val userAccount = view.findViewById<EditText>(R.id.userAccountInput)
+                val loginPassword = view.findViewById<EditText>(R.id.loginPasswordInput)
+
+                auth.signInWithEmailAndPassword(userAccount.text.toString(),loginPassword.text.toString()).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        val intent = Intent(this, HomeActivity::class.java).apply {}
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(this@MainActivity,"sign in failed, please try again!!",Toast.LENGTH_LONG).show()
+                    }
+                }
             }
 
         }
@@ -121,7 +139,38 @@ class MainActivity : AppCompatActivity() {
             val signUp = signUpView.findViewById<Button>(R.id.signUp)
 
             signUp.setOnClickListener{
-                registerFormValidate(signUpView)
+                if(registerFormValidate(signUpView)){
+
+                    val fullName = signUpView.findViewById<EditText>(R.id.fullNameInput)
+                    val email = signUpView.findViewById<EditText>(R.id.emailInput)
+                    val phone = signUpView.findViewById<EditText>(R.id.phoneInput)
+                    val registerPassword = signUpView.findViewById<EditText>(R.id.passwordInput)
+
+                    auth.createUserWithEmailAndPassword(email.text.toString(),registerPassword.text.toString())
+                            .addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    val currentUser = auth.currentUser
+                                    val user = UserModel(currentUser.uid,fullName.text.toString(),email.text.toString(),phone.text.toString(),registerPassword.text.toString())
+
+                                    dbref.child(currentUser.uid).setValue(user).addOnSuccessListener {
+                                        fullName.text.clear()
+                                        email.text.clear()
+                                        phone.text.clear()
+                                        registerPassword.text.clear()
+
+                                    }.addOnFailureListener {
+                                        Toast.makeText(this@MainActivity,"data save failed, please try again!!",Toast.LENGTH_LONG).show()
+                                    }
+
+                                    Toast.makeText(this@MainActivity,"Registration success ${currentUser.uid}",Toast.LENGTH_LONG).show()
+
+                                    signUpdialog.dismiss()
+
+                                }else{
+                                    Toast.makeText(this@MainActivity,"Registration failed, please try again!!",Toast.LENGTH_LONG).show()
+                                }
+                            }
+                }
             }
         }
 
