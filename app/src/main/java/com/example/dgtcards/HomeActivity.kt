@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.time.LocalDateTime
@@ -23,6 +24,9 @@ import kotlin.collections.ArrayList
 class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,CardAdapter.ClickCardItem  {
 
     private lateinit var dbref : DatabaseReference
+    private lateinit var dbRefUser : DatabaseReference
+    private lateinit var auth: FirebaseAuth
+
     private lateinit var cardListRecyclerView : RecyclerView
     private lateinit var cardsArrayList : ArrayList<CardModel>
     var cardAdapter : CardAdapter ? = null;
@@ -43,6 +47,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        getUserData()
         // card list
         cardListRecyclerView = findViewById(R.id.cards)
         cardListRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -72,6 +77,24 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     override fun ClickCardItem(itemModel: CardModel) {
         var card = itemModel;
         startActivity(Intent(this@HomeActivity,CardDetailsActivity::class.java).putExtra("data",card))
+    }
+
+    private fun getUserData(){
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+        dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
+        val user = auth.currentUser
+        val userInfo = dbRefUser.child(user.uid)
+
+        userInfo.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity,error.toString(),Toast.LENGTH_LONG).show()
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                userName.text = "Welcome " + snapshot.child("fullName").value.toString()
+            }
+        })
     }
 
     private fun getCardData(){
@@ -230,6 +253,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             return false
         }
         return true
+    }
+
+    private fun logout(){
+        auth.signOut()
+        startActivity(Intent(this@HomeActivity, MainActivity::class.java))
+        finish()
     }
 }
 

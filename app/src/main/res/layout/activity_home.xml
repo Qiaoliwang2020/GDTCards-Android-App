@@ -39,23 +39,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:text="Hello Qiaoli"
+                android:text="Hello user"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 >
             </TextView>
-
-            <ImageView
+            <TextView
+                android:id="@+id/userLogout"
                 android:layout_gravity="right"
-                android:id="@+id/userIcon"
-                android:layout_width="25dp"
-                android:layout_height="30dp" android:src="@drawable/user"
-                app:layout_constraintTop_toBottomOf="@+id/homeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginRight="20dp"
-                >
-            </ImageView>
-
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
+                android:textColor="#007AFF"
+                android:onClick="logout"
+                />
         </GridLayout>
 
         <androidx.recyclerview.widget.RecyclerView
