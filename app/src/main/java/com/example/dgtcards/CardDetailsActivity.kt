@@ -1,9 +1,11 @@
 package com.example.dgtcards
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
@@ -87,5 +89,10 @@ class CardDetailsActivity : AppCompatActivity() {
                 heightPixels = heightPixels
             )
         )
+    }
+
+     fun navigateHome(view: View){
+        val intent = Intent(this, HomeActivity::class.java).apply {}
+        startActivity(intent)
     }
 }

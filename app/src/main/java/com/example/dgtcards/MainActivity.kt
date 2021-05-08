@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
                                         Toast.makeText(this@MainActivity,"data save failed, please try again!!",Toast.LENGTH_LONG).show()
                                     }
 
-                                    Toast.makeText(this@MainActivity,"Registration success ${currentUser.uid}",Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@MainActivity,"Registration success",Toast.LENGTH_LONG).show()
 
                                     signUpdialog.dismiss()
 

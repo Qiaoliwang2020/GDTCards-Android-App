@@ -12,9 +12,8 @@
         android:text="Transaction"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="34dp"
+        android:textSize="24dp"
         android:textColor="#000"
-        android:textFontWeight="700"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="30dp"
         android:id="@+id/detail_title"
@@ -51,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/transaction_city"
         android:layout_marginTop="20dp"
         android:text="-$4.50"
-        android:textSize="36dp"
+        android:textSize="32dp"
         android:textColor="#000"
         >
     </TextView>
@@ -83,5 +82,21 @@
         android:textColor="#000"
         >
     </TextView>
+
+    <android.widget.Button
+        android:id="@+id/backHome"
+        android:layout_width="340dp"
+        android:layout_height="58dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="35dp"
+        android:onClick="navigateHome"
+        android:text="Home"
+        android:background="@drawable/button_style"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#fff"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

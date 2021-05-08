@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:text="Hello user"
+                android:textAllCaps="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 >

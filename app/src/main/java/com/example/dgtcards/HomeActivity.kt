@@ -118,6 +118,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                     cardAdapter!!.setData(cardsArrayList)
 
                     cardListRecyclerView.adapter = cardAdapter
+                    empty_view.isVisible = false
                 }
                 else{
                     empty_view.isVisible = true
@@ -265,7 +266,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         return true
     }
 
-    private fun logout(){
+    fun logout(view:View){
         auth.signOut()
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
         finish()
