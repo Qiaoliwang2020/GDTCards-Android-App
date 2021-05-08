@@ -2,6 +2,7 @@ package com.example.dgtcards
 import java.io.Serializable
 
 data class CardModel (
+    var userId:String ? = null,
     var image:Int ? = null,
     var balance:Double ? = 0.00,
     var city:String ? = null,

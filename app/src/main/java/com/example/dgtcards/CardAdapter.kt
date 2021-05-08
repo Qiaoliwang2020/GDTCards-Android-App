@@ -13,6 +13,7 @@ class CardAdapter(var clickCardItem: ClickCardItem): RecyclerView.Adapter<CardAd
     private var cardList = ArrayList<CardModel>();
 
     fun setData(cardList: ArrayList<CardModel>){
+        this.cardList.clear()
         this.cardList = cardList
         notifyDataSetChanged()
     }

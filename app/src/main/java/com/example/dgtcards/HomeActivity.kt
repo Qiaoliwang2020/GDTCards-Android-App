@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,7 +24,7 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,CardAdapter.ClickCardItem  {
 
-    private lateinit var dbref : DatabaseReference
+    private lateinit var dbRefCards : DatabaseReference
     private lateinit var dbRefUser : DatabaseReference
     private lateinit var auth: FirebaseAuth
 
@@ -98,8 +99,11 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     }
 
     private fun getCardData(){
-        dbref = FirebaseDatabase.getInstance().getReference("Cards")
-        dbref.addValueEventListener(object : ValueEventListener{
+
+        dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
+        val user = auth.currentUser
+        val userCards: Query = dbRefCards.orderByChild("userId").equalTo(user.uid)
+        userCards.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@HomeActivity,error.toString(),Toast.LENGTH_LONG).show()
             }
@@ -114,6 +118,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                     cardAdapter!!.setData(cardsArrayList)
 
                     cardListRecyclerView.adapter = cardAdapter
+                }
+                else{
+                    empty_view.isVisible = true
                 }
             }
 
@@ -145,10 +152,10 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         val submit = view.findViewById<Button>(R.id.submit)
 
         submit.setOnClickListener{
-            dbref = FirebaseDatabase.getInstance().getReference("Cards")
+            dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
 
             if(formValidate(view)){
-
+                val userId = auth.currentUser.uid
                 val current = LocalDateTime.now()
                 val nextYear = current.plusYears(1)
                 val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -160,7 +167,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 val image = R.drawable.public_transport
                 val balance = 0.00
                 val city = view.findViewById<EditText>(R.id.city)!!.text.toString()
-                val id = dbref.key.toString()
+                val id = city + userId
                 val cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text.toString()
                 val gender = gender
                 val residence = residence
@@ -168,10 +175,10 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 val address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text.toString()
 
 
-                val card = CardModel(image,balance,city,id,expireDay,createdTime,
+                val card = CardModel(userId,image,balance,city,id,expireDay,createdTime,
                         backgroundColor,cardHolderName,gender,residence,address,email)
 
-                dbref.child(city).setValue(card).addOnSuccessListener {
+                dbRefCards.child(city).setValue(card).addOnSuccessListener {
 
                     view.findViewById<EditText>(R.id.city).text.clear()
                     view.findViewById<EditText>(R.id.cardHolderNameInput).text.clear()
@@ -181,6 +188,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                     dialog.dismiss()
 
                     Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
+
+                    cardsArrayList.clear()
+                    getCardData()
 
                 }.addOnFailureListener {
                     Toast.makeText(this,"Failed",Toast.LENGTH_LONG).show()
@@ -220,12 +230,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 R.id.genderFemale ->
                     if (checked) {
                         gender = view.findViewById<RadioButton>(R.id.genderFemale).text.toString()
-                        Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
                     }
                 R.id.genderMale ->
                     if (checked) {
                         gender = view.findViewById<RadioButton>(R.id.genderMale).text.toString()
-                        Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this,gender,Toast.LENGTH_LONG).show()
                     }
             }
         }
