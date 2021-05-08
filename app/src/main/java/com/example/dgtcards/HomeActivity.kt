@@ -124,43 +124,44 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         submit.setOnClickListener{
             dbref = FirebaseDatabase.getInstance().getReference("Cards")
 
-            val current = LocalDateTime.now()
-            val nextYear = current.plusYears(1)
-            val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            if(formValidate(view)){
 
-            val rnd = Random()
-            val backgroundColor: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-            val expireDay =nextYear.format(dateFormatter)
-            val createdTime = current.format(dateFormatter)
-            val image = R.drawable.public_transport
-            val balance = 0.00
-            val city = view.findViewById<EditText>(R.id.city)!!.text.toString()
-            val id = dbref.key.toString()
-            val cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text.toString()
-            val gender = gender
-            val residence = residence
-            val email = view.findViewById<EditText>(R.id.EmailInput)!!.text.toString()
-            val address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text.toString()
+                val current = LocalDateTime.now()
+                val nextYear = current.plusYears(1)
+                val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+                val rnd = Random()
+                val backgroundColor: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+                val expireDay =nextYear.format(dateFormatter)
+                val createdTime = current.format(dateFormatter)
+                val image = R.drawable.public_transport
+                val balance = 0.00
+                val city = view.findViewById<EditText>(R.id.city)!!.text.toString()
+                val id = dbref.key.toString()
+                val cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)!!.text.toString()
+                val gender = gender
+                val residence = residence
+                val email = view.findViewById<EditText>(R.id.EmailInput)!!.text.toString()
+                val address = view.findViewById<EditText>(R.id.CurrentAddressInput)!!.text.toString()
 
 
-            // dialog.dismiss()
+                val card = CardModel(image,balance,city,id,expireDay,createdTime,
+                        backgroundColor,cardHolderName,gender,residence,address,email)
 
-            val card = CardModel(image,balance,city,id,expireDay,createdTime,
-                backgroundColor,cardHolderName,gender,residence,address,email)
+                dbref.child(city).setValue(card).addOnSuccessListener {
 
-            dbref.child(city).setValue(card).addOnSuccessListener {
+                    view.findViewById<EditText>(R.id.city).text.clear()
+                    view.findViewById<EditText>(R.id.cardHolderNameInput).text.clear()
+                    view.findViewById<EditText>(R.id.CurrentAddressInput).text.clear()
+                    view.findViewById<EditText>(R.id.EmailInput).text.clear()
 
-                view.findViewById<EditText>(R.id.city).text.clear()
-                view.findViewById<EditText>(R.id.cardHolderNameInput).text.clear()
-                view.findViewById<EditText>(R.id.CurrentAddressInput).text.clear()
-                view.findViewById<EditText>(R.id.EmailInput).text.clear()
+                    dialog.dismiss()
 
-                dialog.dismiss()
+                    Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
 
-                Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
-
-            }.addOnFailureListener {
-                Toast.makeText(this,"Failed",Toast.LENGTH_LONG).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this,"Failed",Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -207,7 +208,29 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         }
     }
 
+    private fun formValidate(view: View):Boolean{
 
+        val city = view.findViewById<EditText>(R.id.city)
+        val cardHolderName = view.findViewById<EditText>(R.id.cardHolderNameInput)
+        val currentAddress = view.findViewById<EditText>(R.id.CurrentAddressInput)
+        val email = view.findViewById<EditText>(R.id.EmailInput)
+
+
+        if(city.text.toString().isEmpty()){
+            city.error ="city should not be blank"
+            return false
+        }else if(cardHolderName.text.toString().isEmpty()){
+            cardHolderName.error ="cardHolderName should not be blank"
+            return false
+        }else if(currentAddress.text.toString().isEmpty()){
+            currentAddress.error ="currentAddress should not be blank"
+            return false
+        }else if(email.text.toString().isEmpty()){
+            email.error ="email should not be blank"
+            return false
+        }
+        return true
+    }
 }
 
 
