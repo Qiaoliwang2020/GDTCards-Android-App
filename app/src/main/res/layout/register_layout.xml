@@ -163,7 +163,7 @@
             android:text="have an account?" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/linkToLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

@@ -129,12 +129,21 @@ class MainActivity : AppCompatActivity() {
 
             val signUpClose = signUpView.findViewById<ImageView>(R.id.signUp_close)
 
+
+
             signUpClose.setOnClickListener{
                 signUpdialog.dismiss()
             }
 
             signUpdialog.setContentView(signUpView)
             signUpdialog.show()
+
+            val linkToSignIn = signUpView.findViewById<TextView>(R.id.linkToLogin)
+
+            linkToSignIn.setOnClickListener{
+                signUpdialog.dismiss()
+                dialog.show()
+            }
 
             val signUp = signUpView.findViewById<Button>(R.id.signUp)
 
