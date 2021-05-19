@@ -127,6 +127,28 @@
         android:text="create time"
         />
 
+    <TextView
+        android:id="@+id/removeCard"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/created_time"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#EB5757"
+        android:layout_height="wrap_content" android:text="Delete">
+
+    </TextView>
+    <TextView
+        android:id="@+id/recharge"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/created_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#007AFF"
+        android:layout_height="wrap_content" android:text="Recharge">
+
+    </TextView>
 
     <android.widget.Button
         android:id="@+id/backHome"
