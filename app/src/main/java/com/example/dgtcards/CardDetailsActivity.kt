@@ -5,20 +5,26 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
+import kotlinx.android.synthetic.main.recharge.*
 import java.util.*
 import kotlin.concurrent.schedule
 
 class CardDetailsActivity : AppCompatActivity() {
 
     var itemModel:CardModel ? = null;
+    var plan:String ? = null;
     private lateinit var dbRefCards : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +113,52 @@ class CardDetailsActivity : AppCompatActivity() {
         Toast.makeText(this,"item Removed", Toast.LENGTH_LONG).show()
         Timer().schedule(3000){
             navigateHome(view);
+        }
+    }
+    fun recharge(view: View){
+        val rechargeDialog = BottomSheetDialog(this)
+
+        val view = layoutInflater.inflate(R.layout.recharge,null)
+
+        val close = view.findViewById<ImageView>(R.id.iv_close)
+
+        close.setOnClickListener{
+            rechargeDialog.dismiss()
+        }
+
+        rechargeDialog.setContentView(view)
+        rechargeDialog.show()
+    }
+
+    fun onRadioPlanClicked(view: View){
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+
+                R.id.recharge10 ->
+                    if (checked) {
+                        plan = view.findViewById<RadioButton>(R.id.recharge10).text.toString()
+                    }
+                R.id.recharge20 ->
+                    if (checked) {
+                        plan = view.findViewById<RadioButton>(R.id.recharge20).text.toString()
+                    }
+                R.id.recharge30 ->
+                    if (checked) {
+                        plan = view.findViewById<RadioButton>(R.id.recharge30).text.toString()
+                    }
+                R.id.recharge50 ->
+                    if (checked) {
+                        plan = view.findViewById<RadioButton>(R.id.recharge50).text.toString()
+                    }
+                R.id.recharge100 ->
+                    if (checked) {
+                        plan = view.findViewById<RadioButton>(R.id.recharge100).text.toString()
+                    }
+            }
         }
     }
 }
