@@ -179,7 +179,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 val card = CardModel(userId,image,balance,city,id,expireDay,createdTime,
                         backgroundColor,cardHolderName,gender,residence,address,email)
 
-                dbRefCards.child(city).setValue(card).addOnSuccessListener {
+                dbRefCards.child(id).setValue(card).addOnSuccessListener {
 
                     view.findViewById<EditText>(R.id.city).text.clear()
                     view.findViewById<EditText>(R.id.cardHolderNameInput).text.clear()
@@ -188,7 +188,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
                     dialog.dismiss()
 
-                    Toast.makeText(this,"item saved",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"item saved",Toast.LENGTH_SHORT).show()
 
                     cardsArrayList.clear()
                     getCardData()

@@ -2,20 +2,24 @@ package com.example.dgtcards
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
-import kotlinx.android.synthetic.main.card.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 class CardDetailsActivity : AppCompatActivity() {
 
     var itemModel:CardModel ? = null;
+    private lateinit var dbRefCards : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,8 +95,19 @@ class CardDetailsActivity : AppCompatActivity() {
         )
     }
 
-     fun navigateHome(view: View){
+    fun navigateHome(view: View){
         val intent = Intent(this, HomeActivity::class.java).apply {}
         startActivity(intent)
     }
+
+    fun removeCard(view: View){
+        dbRefCards = FirebaseDatabase.getInstance().getReference("Cards");
+        val id = itemModel!!.id.toString();
+        dbRefCards.child(id).removeValue();
+        Toast.makeText(this,"item Removed", Toast.LENGTH_LONG).show()
+        Timer().schedule(3000){
+            navigateHome(view);
+        }
+    }
 }
+
