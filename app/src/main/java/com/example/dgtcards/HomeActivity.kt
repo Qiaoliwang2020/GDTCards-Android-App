@@ -1,21 +1,29 @@
 package com.example.dgtcards
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dgtcards.databinding.ChangePasswordLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.change_password_layout.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -31,8 +39,11 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
     private lateinit var cardListRecyclerView : RecyclerView
     private lateinit var cardsArrayList : ArrayList<CardModel>
     var cardAdapter : CardAdapter ? = null;
-    var residence: Boolean? = null
-    var gender :String? = null
+    var residence: Boolean? = null;
+    var gender :String? = null;
+    var fullName :String ? = null;
+    var email:String ? = null;
+    var phone :String ? = null;
 
 
     // transaction list
@@ -85,7 +96,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         auth = FirebaseAuth.getInstance()
         dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
         val user = auth.currentUser
-        val userInfo = dbRefUser.child(user.uid)
+        val userInfo = dbRefUser.child(user!!.uid)
 
         userInfo.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
@@ -94,6 +105,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 userName.text = "Welcome " + snapshot.child("fullName").value.toString()
+                fullName = snapshot.child("fullName").value.toString()
+                email = snapshot.child("email").value.toString()
+                phone = snapshot.child("phone").value.toString()
             }
         })
     }
@@ -102,7 +116,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
         dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
         val user = auth.currentUser
-        val userCards: Query = dbRefCards.orderByChild("userId").equalTo(user.uid)
+        val userCards: Query = dbRefCards.orderByChild("userId").equalTo(user!!.uid)
         userCards.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@HomeActivity,error.toString(),Toast.LENGTH_LONG).show()
@@ -156,7 +170,7 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
 
             if(formValidate(view)){
-                val userId = auth.currentUser.uid
+                val userId = auth.currentUser!!.uid
                 val current = LocalDateTime.now()
                 val nextYear = current.plusYears(1)
                 val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -266,11 +280,97 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         return true
     }
 
+    fun showUserProfile(view: View){
+        val profileDialog = BottomSheetDialog(this)
+
+        val view = layoutInflater.inflate(R.layout.user_profile_layout,null)
+
+        val close = view.findViewById<ImageView>(R.id.profile_close)
+
+        close.setOnClickListener{
+            profileDialog.dismiss()
+        }
+
+        view.findViewById<EditText>(R.id.profile_fullName).setText(fullName);
+        view.findViewById<EditText>(R.id.profile_email).setText(email);
+        view.findViewById<EditText>(R.id.profile_phone).setText(phone);
+        profileDialog.setContentView(view)
+        profileDialog.show()
+
+        val changePwd = view.findViewById<TextView>(R.id.changePassword);
+
+        changePwd.setOnClickListener{
+            profileDialog.dismiss();
+            showChangePwdDialog();
+        }
+    }
+    // show change password dialog
+    private fun showChangePwdDialog() {
+        val dialogBinding: ChangePasswordLayoutBinding? =
+            DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.change_password_layout,
+                null,
+                false
+            )
+
+        val customDialog = AlertDialog.Builder(this, 0).create()
+
+        customDialog.apply {
+            setView(dialogBinding?.root)
+            setCancelable(false)
+        }.show()
+
+        dialogBinding?.noticeClose?.setOnClickListener{
+            customDialog.dismiss()
+        }
+        dialogBinding?.btnOk?.setOnClickListener {
+            val currentPwd = dialogBinding?.currentPasswordInput?.text.toString();
+            val newPwd = dialogBinding?.newPasswordInput?.text.toString();
+            val confirmPwd = dialogBinding?.confirmPasswordInput?.text.toString();
+            if(newPwd == confirmPwd){
+                changePassword(currentPwd,newPwd)
+            }else{
+                Toast.makeText(this,"Password mismatching.",Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    private fun changePassword(currentPwd:String,newPwd:String){
+
+        dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
+        val user = auth.currentUser
+        if(user != null && user.email != null){
+            val credential = EmailAuthProvider.getCredential(user.email!!,currentPwd)
+
+            user?.reauthenticate(credential)?.addOnCompleteListener{
+                if(it.isSuccessful){
+                    Toast.makeText(this,"Re-authenticated success",Toast.LENGTH_LONG).show();
+                    user?.updatePassword(newPwd)?.addOnCompleteListener{ task->
+                        if(task.isSuccessful){
+                            dbRefUser.child(user!!.uid).child("password").setValue(newPwd);
+                            Toast.makeText(this,"Password changed successfully",Toast.LENGTH_LONG).show();
+                            auth.signOut();
+                            startActivity(Intent(this,MainActivity::class.java))
+                            finish()
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(this,"Re-authenticated failed",Toast.LENGTH_LONG).show()
+                }
+            }
+        }else{
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+    }
+
     fun logout(view:View){
         auth.signOut()
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
         finish()
     }
 }
+
 
 

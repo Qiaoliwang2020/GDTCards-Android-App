@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         dbref = FirebaseDatabase.getInstance().getReference("Users")
+
     }
 
     private fun loginFormValidate(view: View):Boolean{
@@ -110,7 +111,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
         val linkToSignUp = view.findViewById<TextView>(R.id.linkToSignUp)
         linkToSignUp.setOnClickListener{
 
@@ -159,9 +159,9 @@ class MainActivity : AppCompatActivity() {
                             .addOnCompleteListener {
                                 if(it.isSuccessful){
                                     val currentUser = auth.currentUser
-                                    val user = UserModel(currentUser.uid,fullName.text.toString(),email.text.toString(),phone.text.toString(),registerPassword.text.toString())
+                                    val user = UserModel(currentUser!!.uid,fullName.text.toString(),email.text.toString(),phone.text.toString(),registerPassword.text.toString())
 
-                                    dbref.child(currentUser.uid).setValue(user).addOnSuccessListener {
+                                    dbref.child(currentUser!!.uid).setValue(user).addOnSuccessListener {
                                         fullName.text.clear()
                                         email.text.clear()
                                         phone.text.clear()
