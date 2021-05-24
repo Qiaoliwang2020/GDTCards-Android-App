@@ -87,6 +87,94 @@
             android:text="100" />
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/payCardHolderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="20dp"
+        android:text="Card holder's name" />
+
+    <EditText
+        android:id="@+id/payCardHolderNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:height="45dp"
+        android:background="@drawable/input_style"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/cardNumberEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="-0.25dp"
+            android:background="@drawable/input_style"
+            android:drawableRight="@drawable/master_card"
+            android:hint="Card number"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp"
+             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            >
+
+            <EditText
+                android:id="@+id/cardDateEditText"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_style"
+                android:hint="MM/YY"
+                android:inputType="date"
+                android:padding="16dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14sp"
+                 />
+
+            <EditText
+                android:id="@+id/cardCVCEditText"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_style"
+                android:hint="CVC"
+                android:inputType="number"
+                android:padding="16dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14sp"
+                 />
+        </LinearLayout>
+
+    </LinearLayout>
+
     <android.widget.Button
         android:id="@+id/next"
         android:layout_width="match_parent"

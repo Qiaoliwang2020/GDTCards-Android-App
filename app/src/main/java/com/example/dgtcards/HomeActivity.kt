@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.change_password_layout.*
+import kotlinx.android.synthetic.main.user_profile_layout.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -38,12 +39,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
     private lateinit var cardListRecyclerView : RecyclerView
     private lateinit var cardsArrayList : ArrayList<CardModel>
-    var cardAdapter : CardAdapter ? = null;
-    var residence: Boolean? = null;
-    var gender :String? = null;
-    var fullName :String ? = null;
-    var email:String ? = null;
-    var phone :String ? = null;
+    var cardAdapter : CardAdapter ? = null
+    var residence: Boolean? = null
+    var gender :String? = null
+    var fullName :String ? = null
+    var email:String ? = null
+    var phone :String ? = null
 
 
     // transaction list
@@ -52,8 +53,8 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         transactionItemModel(R.drawable.public_transport,"Southern Cross Station - Flinder Street","15 Mar 2021","-$5.0","Melbourne","N03787232767"),
         transactionItemModel(R.drawable.payment_method,"Queens Street - Brooklyn Main Street","5 Mar 2020","-$6.0","NewYork","N03787123e671")
     )
-    var transactionItemModelList = ArrayList<transactionItemModel>();
-    var transactionItemAdapter : transactionItemAdapter ? = null;
+    var transactionItemModelList = ArrayList<transactionItemModel>()
+    var transactionItemAdapter : transactionItemAdapter ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,12 +83,12 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
     override fun ClickTransactionItem(itemModel: transactionItemModel) {
 
-        var transactionItem = itemModel;
+        var transactionItem = itemModel
         startActivity(Intent(this@HomeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
     }
 
     override fun ClickCardItem(itemModel: CardModel) {
-        var card = itemModel;
+        var card = itemModel
         startActivity(Intent(this@HomeActivity,CardDetailsActivity::class.java).putExtra("data",card))
     }
 
@@ -125,6 +126,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 if(snapshot.exists()){
                     for(cardSnapshot in snapshot.children){
                         var card = cardSnapshot.getValue(CardModel::class.java)
+                        if (card != null) {
+                            card.image = R.drawable.public_transport
+                        };
                         cardsArrayList.add(card!!)
                     }
 
@@ -147,9 +151,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
 
         val dialog = BottomSheetDialog(this)
         val offsetFromTop = 150
-        dialog?.behavior?.apply {
+        dialog.behavior.apply {
             isFitToContents = false
-            setExpandedOffset(offsetFromTop)
+            expandedOffset = offsetFromTop
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
@@ -291,17 +295,25 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             profileDialog.dismiss()
         }
 
-        view.findViewById<EditText>(R.id.profile_fullName).setText(fullName);
-        view.findViewById<EditText>(R.id.profile_email).setText(email);
-        view.findViewById<EditText>(R.id.profile_phone).setText(phone);
+        view.findViewById<EditText>(R.id.profile_fullName).setText(fullName)
+        view.findViewById<EditText>(R.id.profile_email).setText(email)
+        view.findViewById<EditText>(R.id.profile_phone).setText(phone)
+
         profileDialog.setContentView(view)
         profileDialog.show()
 
-        val changePwd = view.findViewById<TextView>(R.id.changePassword);
+        val update = view.findViewById<Button>(R.id.Update)
+
+        update.setOnClickListener{
+            changeUserInfo(view)
+            profileDialog.dismiss()
+        }
+
+        val changePwd = view.findViewById<TextView>(R.id.changePassword)
 
         changePwd.setOnClickListener{
-            profileDialog.dismiss();
-            showChangePwdDialog();
+            profileDialog.dismiss()
+            showChangePwdDialog()
         }
     }
     // show change password dialog
@@ -325,9 +337,9 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             customDialog.dismiss()
         }
         dialogBinding?.btnOk?.setOnClickListener {
-            val currentPwd = dialogBinding?.currentPasswordInput?.text.toString();
-            val newPwd = dialogBinding?.newPasswordInput?.text.toString();
-            val confirmPwd = dialogBinding?.confirmPasswordInput?.text.toString();
+            val currentPwd = dialogBinding.currentPasswordInput.text.toString()
+            val newPwd = dialogBinding.newPasswordInput.text.toString()
+            val confirmPwd = dialogBinding.confirmPasswordInput.text.toString()
             if(newPwd == confirmPwd){
                 changePassword(currentPwd,newPwd)
             }else{
@@ -335,27 +347,51 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
             }
         }
     }
-    private fun changePassword(currentPwd:String,newPwd:String){
+    private fun changeUserInfo(view:View){
+        dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
+        val user = auth.currentUser
 
+        val newFullName = view.findViewById<EditText>(R.id.profile_fullName).text.toString()
+        val newPhoneNumber = view.findViewById<EditText>(R.id.profile_phone).text.toString()
+
+        if(user != null && user.email != null){
+            dbRefUser.child(user.uid).child("fullName").setValue(newFullName).addOnCompleteListener{
+                if(it.isSuccessful){
+                    Toast.makeText(this,"full Name change successfully",Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(this,"full Name change failed",Toast.LENGTH_LONG).show()
+                }
+            }
+            dbRefUser.child(user.uid).child("phone").setValue(newPhoneNumber).addOnCompleteListener{
+                if(it.isSuccessful){
+                    Toast.makeText(this,"Phone number change successfully",Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(this,"Phone number change failed",Toast.LENGTH_LONG).show()
+                }
+            }
+        }else{
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+    }
+    private fun changePassword(currentPwd:String,newPwd:String){
         dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
         val user = auth.currentUser
         if(user != null && user.email != null){
             val credential = EmailAuthProvider.getCredential(user.email!!,currentPwd)
-
-            user?.reauthenticate(credential)?.addOnCompleteListener{
+            user.reauthenticate(credential).addOnCompleteListener{
                 if(it.isSuccessful){
-                    Toast.makeText(this,"Re-authenticated success",Toast.LENGTH_LONG).show();
-                    user?.updatePassword(newPwd)?.addOnCompleteListener{ task->
+                    Toast.makeText(this,"Re-authenticated success",Toast.LENGTH_LONG).show()
+                    user.updatePassword(newPwd).addOnCompleteListener{ task->
                         if(task.isSuccessful){
-                            dbRefUser.child(user!!.uid).child("password").setValue(newPwd);
-                            Toast.makeText(this,"Password changed successfully",Toast.LENGTH_LONG).show();
-                            auth.signOut();
+                            dbRefUser.child(user.uid).child("password").setValue(newPwd)
+                            Toast.makeText(this,"Password changed successfully",Toast.LENGTH_LONG).show()
+                            auth.signOut()
                             startActivity(Intent(this,MainActivity::class.java))
                             finish()
                         }
                     }
-                }
-                else{
+                } else{
                     Toast.makeText(this,"Re-authenticated failed",Toast.LENGTH_LONG).show()
                 }
             }

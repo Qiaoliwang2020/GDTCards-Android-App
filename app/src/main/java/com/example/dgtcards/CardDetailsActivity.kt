@@ -2,36 +2,40 @@ package com.example.dgtcards
 
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
-import kotlinx.android.synthetic.main.recharge.*
+import java.time.Instant.now
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 
 class CardDetailsActivity : AppCompatActivity() {
 
-    var itemModel:CardModel ? = null;
-    var plan:String ? = null;
+    var itemModel:CardModel ? = null
+    var plan:String ? = null
+    private lateinit var auth: FirebaseAuth
     private lateinit var dbRefCards : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_details)
 
-        itemModel = intent.getSerializableExtra("data") as CardModel;
+        auth = FirebaseAuth.getInstance()
+
+        itemModel = intent.getSerializableExtra("data") as CardModel
 
         itemModel!!.image?.let { city_icon.setImageResource(it) }
         city_name.text = itemModel!!.city
@@ -107,16 +111,22 @@ class CardDetailsActivity : AppCompatActivity() {
     }
 
     fun removeCard(view: View){
-        dbRefCards = FirebaseDatabase.getInstance().getReference("Cards");
-        val id = itemModel!!.id.toString();
-        dbRefCards.child(id).removeValue();
+        dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
+        val id = itemModel!!.id.toString()
+        dbRefCards.child(id).removeValue()
         Toast.makeText(this,"item Removed", Toast.LENGTH_LONG).show()
-        Timer().schedule(3000){
-            navigateHome(view);
+        Timer().schedule(2000){
+            navigateHome(view)
         }
     }
     fun recharge(view: View){
         val rechargeDialog = BottomSheetDialog(this)
+        val offsetFromTop = 650
+        rechargeDialog.behavior.apply {
+            isFitToContents = false
+            expandedOffset = offsetFromTop
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
         val view = layoutInflater.inflate(R.layout.recharge,null)
 
@@ -128,8 +138,55 @@ class CardDetailsActivity : AppCompatActivity() {
 
         rechargeDialog.setContentView(view)
         rechargeDialog.show()
-    }
 
+        val next = view.findViewById<Button>(R.id.next);
+        next.setOnClickListener{
+            val user = auth.currentUser;
+
+            if(paymentFormValidate(view)){
+
+                val type = "recharge"
+                val paymentData = PaymentInfo();
+                paymentData.amount = plan;
+                paymentData.cardHolderName = view.findViewById<EditText>(R.id.payCardHolderNameInput).text.toString();
+                paymentData.userId = user!!.uid;
+                paymentData.cardId = itemModel!!.id.toString();
+                paymentData.type = type;
+                paymentData.city = itemModel!!.city.toString();
+
+                val intent = Intent(this, ConfirmPayment::class.java).apply {}
+                intent.putExtra("extra_paymentInfo",paymentData)
+                startActivity(intent)
+            }
+        }
+    }
+    private fun paymentFormValidate(view: View):Boolean{
+
+        val cardholderName = view.findViewById<EditText>(R.id.payCardHolderNameInput);
+        val accountNumber = view.findViewById<EditText>(R.id.cardNumberEditText);
+        val cardDate = view.findViewById<EditText>(R.id.cardDateEditText);
+        val cardCVC = view.findViewById<EditText>(R.id.cardCVCEditText);
+        val recharge100 = view.findViewById<RadioButton>(R.id.recharge100);
+
+        if(cardholderName.text.toString().isEmpty()){
+            cardholderName.error = "Your card holder's name should not be blank"
+            return false
+        }else if(accountNumber.text.toString().isEmpty()){
+            accountNumber.error = "account number should not be blank"
+            return false
+        }else if(cardDate.text.toString().isEmpty()){
+            cardDate.error = "card expire Date should not be blank"
+            return false
+        }else if (cardCVC.text.toString().isEmpty()){
+            cardCVC.error = "CVC should not be blank"
+            return false
+        }else if(plan == null){
+            recharge100.error = "Please select a plan"
+            return false
+        }
+
+        return true
+    }
     fun onRadioPlanClicked(view: View){
         if (view is RadioButton) {
             // Is the button now checked?
