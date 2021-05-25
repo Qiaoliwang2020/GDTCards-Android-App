@@ -2,8 +2,8 @@ package com.example.dgtcards
 
 import java.io.Serializable
 
-data class PaymentInfo (
-    var id:String? = null,
+data class TransactionItemModel (
+    var image:Int? = R.drawable.payment_method,
     var userId:String ? = null,
     var cardId:String ? = null,
     var amount:String ? = null,
@@ -14,5 +14,4 @@ data class PaymentInfo (
     var notes :String ? = null,
     var reciptNumber :String ? = null,
     var cardBalance :Double ? = null,
-    var image:Int? = R.drawable.payment_method,
-): Serializable
+):Serializable

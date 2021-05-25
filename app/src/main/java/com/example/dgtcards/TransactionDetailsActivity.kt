@@ -8,19 +8,19 @@ import kotlinx.android.synthetic.main.activity_transaction_details.*
 
 class TransactionDetailsActivity : AppCompatActivity() {
 
-    var itemModel:transactionItemModel ? = null;
+    var itemModel:TransactionItemModel ? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_details)
 
-        itemModel = intent.getSerializableExtra("data") as transactionItemModel;
+        itemModel = intent.getSerializableExtra("data") as TransactionItemModel;
 
-        imageView.setImageResource(itemModel!!.image)
-        transaction_title.text = itemModel!!.name
+        imageView.setImageResource(itemModel!!.image!!)
+        transaction_title.text = itemModel!!.type!!.uppercase()
         transaction_city.text = itemModel!!.city
-        transaction_amount.text = itemModel!!.cost
-        transaction_id.text = "Receipt No:"+ itemModel!!.id
+        transaction_amount.text = "$" + itemModel!!.amount
+        transaction_id.text = "Receipt No:"+ itemModel!!.reciptNumber
     }
 
     fun navigateHome(view: View){

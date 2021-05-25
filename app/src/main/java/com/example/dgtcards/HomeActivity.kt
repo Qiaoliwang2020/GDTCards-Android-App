@@ -1,11 +1,9 @@
 package com.example.dgtcards
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -31,30 +29,26 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransactionItem,CardAdapter.ClickCardItem  {
+class HomeActivity : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem,CardAdapter.ClickCardItem  {
 
     private lateinit var dbRefCards : DatabaseReference
     private lateinit var dbRefUser : DatabaseReference
+    private lateinit var dbRefPayment : DatabaseReference
     private lateinit var auth: FirebaseAuth
 
     private lateinit var cardListRecyclerView : RecyclerView
     private lateinit var cardsArrayList : ArrayList<CardModel>
     var cardAdapter : CardAdapter ? = null
+
     var residence: Boolean? = null
     var gender :String? = null
     var fullName :String ? = null
     var email:String ? = null
     var phone :String ? = null
 
-
-    // transaction list
-    var transactionListModel = arrayOf(
-        transactionItemModel(R.drawable.payment_method,"Flinders Street - Deakin University","15 Mar 2021","-$4.50","Melbourne","N0378743767"),
-        transactionItemModel(R.drawable.public_transport,"Southern Cross Station - Flinder Street","15 Mar 2021","-$5.0","Melbourne","N03787232767"),
-        transactionItemModel(R.drawable.payment_method,"Queens Street - Brooklyn Main Street","5 Mar 2020","-$6.0","NewYork","N03787123e671")
-    )
-    var transactionItemModelList = ArrayList<transactionItemModel>()
-    var transactionItemAdapter : transactionItemAdapter ? = null
+    private lateinit var transactionsRecyclerView : RecyclerView
+    private var transactionItemModelList = ArrayList<TransactionItemModel>()
+    var transactionItemAdapter : TransactionItemAdapter ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,18 +64,16 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
         getCardData()
 
         // transaction list
-        for (item in transactionListModel){
-            transactionItemModelList.add(item)
-        }
-        transaction_history_list.layoutManager = LinearLayoutManager(this)
-        transaction_history_list.setHasFixedSize(true)
-        transactionItemAdapter = transactionItemAdapter(this)
-        transactionItemAdapter!!.setData(transactionItemModelList)
-        transaction_history_list.adapter = transactionItemAdapter
+        transactionsRecyclerView = findViewById(R.id.transaction_history_list)
+        transactionsRecyclerView.layoutManager = LinearLayoutManager(this)
+        transactionsRecyclerView.setHasFixedSize(true)
+
+        transactionItemModelList = arrayListOf<TransactionItemModel>()
+        getPaymentsData()
     }
 
 
-    override fun ClickTransactionItem(itemModel: transactionItemModel) {
+    override fun clickTransactionItem(itemModel: TransactionItemModel) {
 
         var transactionItem = itemModel
         startActivity(Intent(this@HomeActivity,TransactionDetailsActivity::class.java).putExtra("data",transactionItem))
@@ -140,6 +132,37 @@ class HomeActivity : AppCompatActivity(),transactionItemAdapter.ClickTransaction
                 }
                 else{
                     empty_view.isVisible = true
+                }
+            }
+
+        })
+    }
+
+    private fun getPaymentsData(){
+
+        dbRefPayment = FirebaseDatabase.getInstance().getReference("Payments")
+        val user = auth.currentUser
+        val userPayments: Query = dbRefPayment.orderByChild("userId").equalTo(user!!.uid)
+        userPayments.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity,error.toString(),Toast.LENGTH_LONG).show()
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    for(paymentSnapshot in snapshot.children){
+                        var payment = paymentSnapshot.getValue(TransactionItemModel::class.java)
+                        if (payment != null) {
+                            transactionItemModelList.add(payment)
+                        }
+                    }
+
+                    transactionItemAdapter = TransactionItemAdapter(this@HomeActivity)
+                    transactionItemAdapter!!.setData(transactionItemModelList)
+
+                    transactionsRecyclerView.adapter = transactionItemAdapter
+                }
+                else{
+                    // empty_view.isVisible = true
                 }
             }
 
