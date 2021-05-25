@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
+import kotlinx.android.synthetic.main.withdraw.*
 import java.time.Instant.now
 import java.time.LocalDateTime
 import java.util.*
@@ -46,6 +48,14 @@ class CardDetailsActivity : AppCompatActivity() {
         itemModel!!.cardBackground?.let { card_background.setBackgroundColor(it) }
         page_title.text = itemModel!!.city
 
+        // show remove card button or withdraw amount button according to balance
+        if(itemModel!!.balance!! > 0){
+            remove_Card.isVisible = false;
+            withdraw_amount.isVisible = true;
+        }else{
+            remove_Card.isVisible = true;
+            withdraw_amount.isVisible = false;
+        }
 
         itemModel!!.id?.let { displayBitmap(it) }
     }
@@ -218,6 +228,90 @@ class CardDetailsActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    fun withdrawAmount(view: View) {
+
+        val withdrawDialog = BottomSheetDialog(this)
+
+        val offsetFromTop = 50
+        withdrawDialog.behavior.apply {
+            isFitToContents = false
+            expandedOffset = offsetFromTop
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        val view = layoutInflater.inflate(R.layout.withdraw,null)
+
+        val close = view.findViewById<ImageView>(R.id.iv_close)
+
+        close.setOnClickListener{
+            withdrawDialog.dismiss()
+        }
+
+        withdrawDialog.setContentView(view)
+        withdrawDialog.show()
+
+        val currencies = resources.getStringArray(R.array.currencies)
+        val spinner = view.findViewById<Spinner>(R.id.currency_spinner)
+        if (spinner != null) {
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item, currencies
+            )
+            spinner.adapter = adapter
+        }
+        val withdrawAll = view.findViewById<TextView>(R.id.withdraw_all)
+
+        withdrawAll.setOnClickListener{
+            val amountInput = view.findViewById<EditText>(R.id.withdraw_numberInput)
+            amountInput.setText(itemModel!!.balance.toString())
+        }
+
+        val next = view.findViewById<Button>(R.id.next);
+        next.setOnClickListener{
+            val user = auth.currentUser;
+
+            if(withdrawFormValidate(view)){
+                val type = "withdraw"
+                val paymentData = PaymentInfo();
+                paymentData.amount = view.findViewById<EditText>(R.id.withdraw_numberInput).text.toString();
+                paymentData.cardHolderName = view.findViewById<EditText>(R.id.payCardHolderNameInput).text.toString();
+                paymentData.userId = user!!.uid;
+                paymentData.cardId = itemModel!!.id.toString();
+                paymentData.type = type;
+                paymentData.city = itemModel!!.city.toString();
+                paymentData.cardBalance = itemModel!!.balance;
+
+                val intent = Intent(this, ConfirmPayment::class.java).apply {}
+                intent.putExtra("extra_paymentInfo",paymentData)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun withdrawFormValidate(view: View):Boolean{
+
+        val cardholderName = view.findViewById<EditText>(R.id.payCardHolderNameInput);
+        val amount = view.findViewById<EditText>(R.id.withdraw_numberInput);
+        val bsb = view.findViewById<EditText>(R.id.cardBSB);
+        val cardAccount = view.findViewById<EditText>(R.id.cardAccountNumber);
+
+        if(cardholderName.text.toString().isEmpty()){
+            cardholderName.error = "Your card holder's name should not be blank"
+            return false
+        }else if(cardAccount.text.toString().isEmpty()){
+            cardAccount.error = "account number should not be blank"
+            return false
+        }else if (bsb.text.toString().isEmpty()){
+            bsb.error = "bsb should not be blank"
+            return false
+        }else if(amount.text.toString().isEmpty()){
+            amount.error = "amount should not be blank"
+            return false
+        }
+
+        return true
     }
 }
 

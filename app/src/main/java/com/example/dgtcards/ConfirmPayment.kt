@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_confirm_payment.*
-import kotlinx.android.synthetic.main.card.*
+import kotlinx.android.synthetic.main.activity_confirm_payment.transaction_amount
+import kotlinx.android.synthetic.main.activity_payment_success.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter.ofPattern
 
@@ -25,6 +27,11 @@ class ConfirmPayment : AppCompatActivity() {
         paymentInfo = intent.getSerializableExtra("extra_paymentInfo") as PaymentInfo
         payment_type.text = paymentInfo!!.type + " - " + paymentInfo!!.city
         transaction_amount.text = "$" + paymentInfo!!.amount
+        if(paymentInfo!!.type == "withdraw"){
+            payment_title.text = "Withdraw"
+            action_btn.text = "withdraw now"
+        }
+
     }
 
     fun payNow(view: View) {
@@ -37,7 +44,14 @@ class ConfirmPayment : AppCompatActivity() {
         val id = paymentInfo!!.id
         val cardId = paymentInfo!!.cardId
         val cardBalance = paymentInfo!!.cardBalance
-        val amount = paymentInfo!!.amount?.toDouble()?.plus(cardBalance!!);
+        var amount: Double ? = null
+
+        amount = if(paymentInfo!!.type == "recharge"){
+            paymentInfo!!.amount?.toDouble()?.plus(cardBalance!!);
+        }else{
+            cardBalance!! - paymentInfo!!.amount?.toDouble()!!;
+        }
+
         paymentInfo?.reciptNumber = paymentInfo!!.type+ current.format(numberFormatter).toString()
 
         dbRefPayments = FirebaseDatabase.getInstance().getReference("Payments")

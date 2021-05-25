@@ -128,7 +128,7 @@
         />
 
     <TextView
-        android:id="@+id/removeCard"
+        android:id="@+id/remove_Card"
         android:layout_width="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/created_time"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,8 +137,20 @@
         android:textColor="#EB5757"
         android:onClick="removeCard"
         android:layout_height="wrap_content" android:text="Delete">
-
     </TextView>
+    <TextView
+        android:id="@+id/withdraw_amount"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/created_time"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#007AFF"
+        android:onClick="withdrawAmount"
+        android:layout_height="wrap_content"
+        android:text="Withdraw">
+    </TextView>
+
     <TextView
         android:id="@+id/recharge"
         android:layout_width="wrap_content"

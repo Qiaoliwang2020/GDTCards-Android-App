@@ -75,7 +75,7 @@
         />
 
     <android.widget.Button
-        android:id="@+id/backHome"
+        android:id="@+id/action_btn"
         android:layout_width="340dp"
         android:layout_height="58dp"
         android:layout_marginLeft="30dp"
