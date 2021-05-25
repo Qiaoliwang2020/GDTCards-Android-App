@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_confirm_payment.*
+import kotlinx.android.synthetic.main.card.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter.ofPattern
 
@@ -36,7 +36,8 @@ class ConfirmPayment : AppCompatActivity() {
         paymentInfo?.id = paymentInfo!!.type + paymentInfo!!.cardId + current.format(numberFormatter).toString()
         val id = paymentInfo!!.id
         val cardId = paymentInfo!!.cardId
-        val amount = paymentInfo!!.amount?.toFloat();
+        val cardBalance = paymentInfo!!.cardBalance
+        val amount = paymentInfo!!.amount?.toDouble()?.plus(cardBalance!!);
         paymentInfo?.reciptNumber = paymentInfo!!.type+ current.format(numberFormatter).toString()
 
         dbRefPayments = FirebaseDatabase.getInstance().getReference("Payments")

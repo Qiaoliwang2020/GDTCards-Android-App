@@ -153,6 +153,7 @@ class CardDetailsActivity : AppCompatActivity() {
                 paymentData.cardId = itemModel!!.id.toString();
                 paymentData.type = type;
                 paymentData.city = itemModel!!.city.toString();
+                paymentData.cardBalance = itemModel!!.balance;
 
                 val intent = Intent(this, ConfirmPayment::class.java).apply {}
                 intent.putExtra("extra_paymentInfo",paymentData)

@@ -13,4 +13,5 @@ data class PaymentInfo (
     var createTime:String ? = null,
     var notes :String ? = null,
     var reciptNumber :String ? = null,
+    var cardBalance :Double ? = null,
 ): Serializable
