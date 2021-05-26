@@ -2,6 +2,7 @@ package com.example.dgtcards
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -63,6 +64,21 @@ class CardDetailsActivity : AppCompatActivity() {
 
         // set barcode by card id
         itemModel!!.id?.let { displayBitmap(it) }
+
+        // show video
+        configureVideoView()
+    }
+
+    private fun configureVideoView() {
+
+        val mediaController = MediaController(this)
+        mediaController.setAnchorView(videoView)
+        val onlineUri: Uri = Uri.parse("https://cdn.videvo.net/videvo_files/video/free/2020-06/small_watermarked/introBusinessEtEconomySansText_1591434698_preview.webm")
+
+        videoView.setMediaController(mediaController)
+        videoView.setVideoURI(onlineUri)
+        videoView.requestFocus()
+        videoView.start()
     }
 
     // create barcode bitmap
