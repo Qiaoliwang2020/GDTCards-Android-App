@@ -14,8 +14,10 @@ class TransactionDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_details)
 
+        // get data from home activity
         itemModel = intent.getSerializableExtra("data") as TransactionItemModel;
 
+        // show data to the page
         imageView.setImageResource(itemModel!!.image!!)
         transaction_title.text = itemModel!!.type!!.uppercase()
         transaction_city.text = itemModel!!.city
@@ -23,6 +25,7 @@ class TransactionDetailsActivity : AppCompatActivity() {
         transaction_id.text = "Receipt No:"+ itemModel!!.reciptNumber
     }
 
+    // back to home
     fun navigateHome(view: View){
         val intent = Intent(this, HomeActivity::class.java).apply {}
         startActivity(intent)

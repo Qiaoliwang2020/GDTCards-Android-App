@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.card.view.*
-import java.util.ArrayList
+import java.util.*
 
 class CardAdapter(var clickCardItem: ClickCardItem): RecyclerView.Adapter<CardAdapter.CardListViewHolder>() {
 

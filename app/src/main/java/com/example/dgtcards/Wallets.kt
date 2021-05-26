@@ -37,6 +37,7 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallets)
 
+        // add image to image array
         imageArray.add(R.drawable.adv1)
         imageArray.add(R.drawable.adv2)
         imageArray.add(R.drawable.adv3)
@@ -47,6 +48,8 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
 
         carouselView!!.setImageListener(imageListener)
 
+
+        // initialize auth
         auth = FirebaseAuth.getInstance()
 
         // show transaction list
@@ -79,7 +82,6 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
         vl.fillColor = R.color.green_700
         vl.fillAlpha = R.color.black
 
-
         // set xAxis of line chart
         lineChart.xAxis.labelRotationAngle = 0f
 
@@ -90,6 +92,7 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
     // image listener for carousel
     var imageListener = ImageListener{ position, imageView ->imageView.setImageResource(imageArray[position])}
 
+
     // click transaction list item to check transaction details
     override fun clickTransactionItem(itemModel: TransactionItemModel) {
         var transactionItem = itemModel
@@ -99,6 +102,7 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
     // get all payments data by user id
     private fun getPaymentsData(){
 
+        // access to firebase Payments table
         dbRefPayment = FirebaseDatabase.getInstance().getReference("Payments")
         val user = auth.currentUser
 

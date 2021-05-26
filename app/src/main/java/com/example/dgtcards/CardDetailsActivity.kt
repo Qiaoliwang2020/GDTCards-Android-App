@@ -17,16 +17,17 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.Code128Writer
 import kotlinx.android.synthetic.main.activity_card_details.*
-import kotlinx.android.synthetic.main.withdraw.*
-import java.time.Instant.now
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 
 class CardDetailsActivity : AppCompatActivity() {
 
+    // initialize card data model and plan(recharge amount)
     var itemModel:CardModel ? = null
+    // plan (recharge amount)
     var plan:String ? = null
+
+    // initialize auth and database reference
     private lateinit var auth: FirebaseAuth
     private lateinit var dbRefCards : DatabaseReference
 
@@ -35,10 +36,13 @@ class CardDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_details)
 
+        // access auth
         auth = FirebaseAuth.getInstance()
 
+        // get the data from homeActivity
         itemModel = intent.getSerializableExtra("data") as CardModel
 
+        // show data to page
         itemModel!!.image?.let { city_icon.setImageResource(it) }
         city_name.text = itemModel!!.city
         balance_amount.text = "$"+ itemModel!!.balance.toString()
@@ -57,9 +61,11 @@ class CardDetailsActivity : AppCompatActivity() {
             withdraw_amount.isVisible = false;
         }
 
+        // set barcode by card id
         itemModel!!.id?.let { displayBitmap(it) }
     }
 
+    // create barcode bitmap
     private fun createBarcodeBitmap(
         barcodeValue: String,
         @ColorInt barcodeColor: Int,
@@ -100,6 +106,7 @@ class CardDetailsActivity : AppCompatActivity() {
         return bitmap
     }
 
+    // show barcode bitmap
     private fun displayBitmap(value: String) {
         val widthPixels = resources.getDimensionPixelSize(R.dimen.width_barcode)
         val heightPixels = resources.getDimensionPixelSize(R.dimen.height_barcode)
@@ -115,21 +122,35 @@ class CardDetailsActivity : AppCompatActivity() {
         )
     }
 
+    // back to home page
     fun navigateHome(view: View){
         val intent = Intent(this, HomeActivity::class.java).apply {}
         startActivity(intent)
     }
 
+    // when balance is 0, user can click to remove the card
     fun removeCard(view: View){
+        // access firebase database table Cards
         dbRefCards = FirebaseDatabase.getInstance().getReference("Cards")
+
+        // remove the card by id
         val id = itemModel!!.id.toString()
-        dbRefCards.child(id).removeValue()
-        Toast.makeText(this,"item Removed", Toast.LENGTH_LONG).show()
-        Timer().schedule(2000){
-            navigateHome(view)
+        dbRefCards.child(id).removeValue().addOnSuccessListener {
+            // if success, show success message and return to home page after 2 second
+            Toast.makeText(this,"card Removed", Toast.LENGTH_LONG).show()
+            Timer().schedule(2000){
+                navigateHome(view)
+            }
+        }.addOnFailureListener {
+            // if failed show message
+            Toast.makeText(this,"card remove failed", Toast.LENGTH_LONG).show()
         }
+
     }
+    // when user click recharge
     fun recharge(view: View){
+
+        // create a bottom sheet dialog and set the distance and behavior
         val rechargeDialog = BottomSheetDialog(this)
         val offsetFromTop = 650
         rechargeDialog.behavior.apply {
@@ -138,23 +159,30 @@ class CardDetailsActivity : AppCompatActivity() {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        // set recharge layout as the dialog view
         val view = layoutInflater.inflate(R.layout.recharge,null)
 
+        // get close button
         val close = view.findViewById<ImageView>(R.id.iv_close)
 
+        // when click close button, close the dialog
         close.setOnClickListener{
             rechargeDialog.dismiss()
         }
-
+        // set content view and show the dialog
         rechargeDialog.setContentView(view)
         rechargeDialog.show()
 
+        // when user click next, get next button
         val next = view.findViewById<Button>(R.id.next);
         next.setOnClickListener{
+            // get current user
             val user = auth.currentUser;
 
+            // validate the recharge form
             if(paymentFormValidate(view)){
 
+                // set the payment data
                 val type = "recharge"
                 val paymentData = PaymentInfo();
                 paymentData.amount = plan;
@@ -165,12 +193,14 @@ class CardDetailsActivity : AppCompatActivity() {
                 paymentData.city = itemModel!!.city.toString();
                 paymentData.cardBalance = itemModel!!.balance;
 
+                // navigate to confirm payment and send the paymentInfo data to confirmPayment
                 val intent = Intent(this, ConfirmPayment::class.java).apply {}
                 intent.putExtra("extra_paymentInfo",paymentData)
                 startActivity(intent)
             }
         }
     }
+    // validate for payment form
     private fun paymentFormValidate(view: View):Boolean{
 
         val cardholderName = view.findViewById<EditText>(R.id.payCardHolderNameInput);
@@ -198,6 +228,7 @@ class CardDetailsActivity : AppCompatActivity() {
 
         return true
     }
+    // when plan change, get the plan(recharge amount)
     fun onRadioPlanClicked(view: View){
         if (view is RadioButton) {
             // Is the button now checked?
@@ -230,10 +261,13 @@ class CardDetailsActivity : AppCompatActivity() {
         }
     }
 
+    // when user click to withdraw
     fun withdrawAmount(view: View) {
 
+        // create a bottom sheet
         val withdrawDialog = BottomSheetDialog(this)
 
+        // set the distance and behavior of the bottom sheet
         val offsetFromTop = 50
         withdrawDialog.behavior.apply {
             isFitToContents = false
@@ -241,19 +275,26 @@ class CardDetailsActivity : AppCompatActivity() {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        // set the withdraw layout as the view of this dialog
         val view = layoutInflater.inflate(R.layout.withdraw,null)
 
+        // get close button
         val close = view.findViewById<ImageView>(R.id.iv_close)
 
+        // click to close the dialog
         close.setOnClickListener{
             withdrawDialog.dismiss()
         }
 
+        // set the content view and show dialog
         withdrawDialog.setContentView(view)
         withdrawDialog.show()
 
+        // set the default currencies
         val currencies = resources.getStringArray(R.array.currencies)
+        // get the spinner of currenies
         val spinner = view.findViewById<Spinner>(R.id.currency_spinner)
+        // set the item adapter
         if (spinner != null) {
             val adapter = ArrayAdapter(
                 this,
@@ -261,17 +302,23 @@ class CardDetailsActivity : AppCompatActivity() {
             )
             spinner.adapter = adapter
         }
+        // get withdraw all button
         val withdrawAll = view.findViewById<TextView>(R.id.withdraw_all)
 
+        // when user click withdraw all set the card balance as withdraw amount
         withdrawAll.setOnClickListener{
             val amountInput = view.findViewById<EditText>(R.id.withdraw_numberInput)
             amountInput.setText(itemModel!!.balance.toString())
         }
 
+        // get next button
         val next = view.findViewById<Button>(R.id.next);
+        // when user click next
         next.setOnClickListener{
+            // get current user
             val user = auth.currentUser;
 
+            // validate the form and set data
             if(withdrawFormValidate(view)){
                 val type = "withdraw"
                 val paymentData = PaymentInfo();
@@ -283,6 +330,7 @@ class CardDetailsActivity : AppCompatActivity() {
                 paymentData.city = itemModel!!.city.toString();
                 paymentData.cardBalance = itemModel!!.balance;
 
+                // navigate to confirm payment and send the paymentInfo data to confirmPayment activity
                 val intent = Intent(this, ConfirmPayment::class.java).apply {}
                 intent.putExtra("extra_paymentInfo",paymentData)
                 startActivity(intent)
@@ -290,6 +338,7 @@ class CardDetailsActivity : AppCompatActivity() {
         }
     }
 
+    // valiate withdraw form
     private fun withdrawFormValidate(view: View):Boolean{
 
         val cardholderName = view.findViewById<EditText>(R.id.payCardHolderNameInput);
