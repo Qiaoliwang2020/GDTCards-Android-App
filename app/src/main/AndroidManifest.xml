@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DGTCards">
         <activity
+            android:name=".Wallets"
+            android:exported="true" />
+        <activity
             android:name=".PaymentSuccess"
             android:exported="true" />
         <activity

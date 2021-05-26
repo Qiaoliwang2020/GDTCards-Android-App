@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_payment_success.xml" value="0.161328125" />
         <entry key="app/src/main/res/layout/activity_transaction_details.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_wallets.xml" value="0.1" />
         <entry key="app/src/main/res/layout/change_password_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/create_card_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login_layout.xml" value="0.1" />

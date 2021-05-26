@@ -112,6 +112,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="25dp"
                 android:textSize="16dp"
+                android:onClick="checkAllTransactions"
                 android:textColor="#007AFF"
                 />
         </GridLayout>
@@ -129,6 +130,15 @@
             android:id="@+id/transaction_history_list"
             tools:listitem="@layout/transaction_item"
             />
+
+        <TextView
+            android:id="@+id/empty_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:text="You don't have transaction histories" />
     </GridLayout>
 
 

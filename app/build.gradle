@@ -71,4 +71,9 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
+
+    // carouselview library
+    implementation 'com.synnapps:carouselview:0.1.5'
+    // line chart library
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
