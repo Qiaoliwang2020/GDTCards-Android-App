@@ -73,7 +73,7 @@ class Wallets : AppCompatActivity(),TransactionItemAdapter.ClickTransactionItem 
 
 
         // set the label of line chart
-        val vl = LineDataSet(entries, "My Transaction")
+        val vl = LineDataSet(entries, "My Transactions")
 
         // default setting of line chart
         vl.setDrawValues(false)

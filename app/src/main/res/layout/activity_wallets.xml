@@ -6,12 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".Wallets">
     <TextView
+        android:id="@+id/walletsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Wallets"
+        android:textSize="24dp"
+        android:textColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        />
+    <TextView
         android:id="@id/backHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
         android:onClick="navigateHome"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walletsTitle"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -26,9 +40,10 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         app:fillColor="#FFFFFFFF"
         app:pageColor="#00000000"
+        android:background="@drawable/input_style"
         app:radius="5dp"
         app:slideInterval="3000"
         app:strokeColor="#ffffff"
@@ -54,7 +69,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:textColor="#000"
-        android:textSize="28dp"
+        android:textSize="22dp"
         android:text="Transactions"
         android:id="@+id/bar_title" />
 

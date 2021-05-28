@@ -9,14 +9,17 @@
         <entry key="app/src/main/res/drawable-mdpi/circle_gray.xml" value="0.1734375" />
         <entry key="app/src/main/res/layout/activity_card_details.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_confirm_payment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_payment_success.xml" value="0.161328125" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17076502732240437" />
+        <entry key="app/src/main/res/layout/activity_payment_success.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_transaction_details.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_wallets.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/card.xml" value="0.1014344262295082" />
         <entry key="app/src/main/res/layout/change_password_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/create_card_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login_layout.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/recharge.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/recharge.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/register_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/transaction_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/user_profile_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/withdraw.xml" value="0.161328125" />
