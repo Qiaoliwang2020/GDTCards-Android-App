@@ -354,7 +354,7 @@ class CardDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // valiate withdraw form
+    // validate withdraw form
     private fun withdrawFormValidate(view: View):Boolean{
 
         val cardholderName = view.findViewById<EditText>(R.id.payCardHolderNameInput);
